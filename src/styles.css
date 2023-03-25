@@ -1,14 +1,13 @@
 @font-face {
-    font-family: 'Rubik';
-    font-style: normal;
-    font-display: swap;
-    font-weight: 300;
-    src: local(''),
-        url('./src/static/fonts/rubik/rubik-300.woff') format('woff'),
-        url(./src/static/fonts/rubik/rubik-300.woff2) format('woff2');
+  font-family: 'Rubik';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: local(''), url('./src/static/fonts/rubik/rubik-300.woff') format('woff'),
+    url(./src/static/fonts/rubik/rubik-300.woff2) format('woff2');
 }
 
 body {
-    background-color: #ccc;
-    font-family: 'Rubik', serif;
+  background-color: #ccc;
+  font-family: 'Rubik', serif;
 }

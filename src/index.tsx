@@ -6,11 +6,11 @@ import App from './App'
 import './styles.css'
 
 const appRouting = (
-    <Router>
-        <Routes>
-            <Route path="/" element={<App />} />
-        </Routes>
-    </Router>
+  <Router>
+    <Routes>
+      <Route path="/" element={<App />} />
+    </Routes>
+  </Router>
 )
 
 ReactDOM.render(appRouting, document.getElementById('root'))
