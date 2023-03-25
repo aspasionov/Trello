@@ -4,10 +4,10 @@ import Field from '@components/Field'
 import img from '@static/images/spin_on.png'
 
 const App: React.FC = () => (
-          <div>
+  <div>
     Hello, World!
-                            <Field />
-<img src={img} alt="" />
+    <Field />
+    <img src={img} alt="" />
   </div>
 )
 
