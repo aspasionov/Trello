@@ -1,16 +1,28 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { createRoot } from 'react-dom/client'
+import { ChakraProvider } from '@chakra-ui/react'
+
+import {
+  createBrowserRouter,
+  RouterProvider
+} from 'react-router-dom'
 
 import App from './App'
+import Home from './screens/Home'
 import './styles.css'
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />
+  }
+])
+
 const appRouting = (
-  <Router>
-    <Routes>
-      <Route path="/" element={<App />} />
-    </Routes>
-  </Router>
+  <ChakraProvider>
+    <RouterProvider router={router} />
+  </ChakraProvider>
 )
 
-ReactDOM.render(appRouting, document.getElementById('root'))
+const root = createRoot(document.getElementById('root') as HTMLElement)
+root.render(appRouting)

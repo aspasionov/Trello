@@ -23,4 +23,7 @@ export default defineConfig({
         alias: readAliasFromTsConfig(),
     },
     plugins: [reactRefresh()],
+    define: {
+      "process.env": {},
+    }
 })
