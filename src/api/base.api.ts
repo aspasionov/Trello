@@ -1,7 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 const initialConfig: AxiosRequestConfig = {
-  baseURL: 'https://sheetdb.io/api/v1/1v07nmgsjb4i0',
+  baseURL: 'https://62b851d3f4cb8d63df5be487.mockapi.io',
   headers: {
     'Content-Type': 'application/json',
     timeout: 1000

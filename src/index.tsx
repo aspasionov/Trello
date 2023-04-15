@@ -6,8 +6,9 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
+import { store } from '@store/store'
+import { Provider } from 'react-redux'
 
-import App from './App'
 import Home from './screens/Home'
 import './styles.css'
 
@@ -19,9 +20,11 @@ const router = createBrowserRouter([
 ])
 
 const appRouting = (
-  <ChakraProvider>
-    <RouterProvider router={router} />
-  </ChakraProvider>
+  <Provider store={store}>
+    <ChakraProvider>
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  </Provider>
 )
 
 const root = createRoot(document.getElementById('root') as HTMLElement)

@@ -1,3 +1,5 @@
+@import 'reset-css';
+
 @font-face {
   font-family: 'Rubik';
   font-style: normal;
@@ -7,7 +9,9 @@
     url(./src/static/fonts/rubik/rubik-300.woff2) format('woff2');
 }
 
-body {
+body,html {
+  height: 100%;
+  min-height: 100vh;
   background-color: #ccc;
   font-family: 'Rubik', serif;
 }
