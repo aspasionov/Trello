@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchAll } from '@api/columns.api'
+import { fetchAll, deleteOne } from '@api/columns.api'
 import { fetchAll as fetchAllCards } from '@api/cards.api'
 import type { CardT, ColumnT } from './types'
 
@@ -19,3 +19,8 @@ export const fetchData = createAsyncThunk(
     return columnWithCards
   }
 )
+
+export const deleteColumn = createAsyncThunk('column/deleteColumn', async (id: string) => {
+  const response = await deleteOne(id)
+  return response.data
+})
