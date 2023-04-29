@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { DeleteIcon } from '@chakra-ui/icons'
-import { useAppDispatch } from '@store/store'
 import {
   Box,
   Flex,
