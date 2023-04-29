@@ -23,5 +23,3 @@ export interface ColumnI {
   items: ColumnT[]
   status: StatusE
 }
-
-

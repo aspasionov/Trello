@@ -13,4 +13,4 @@ declare module '*.scss' {
   export default content
 }
 
-declare module 'react-trello'
+// declare module 'react-trello'

@@ -20,11 +20,8 @@ interface Props {
   onDelete: () => void
 }
 
-const LaneHeader: React.FC<Props> = ({ title, label, onDelete, ...rest }) => {
+const LaneHeader: React.FC<Props> = ({ title, label, onDelete }) => {
   const [open, setOpen] = useState(false)
-  const dispatch = useAppDispatch()
-
-  console.log('rest', rest)
 
   const handleOpenModal = (): void => {
     setOpen(true)
@@ -32,13 +29,6 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete, ...rest }) => {
 
   const handleCloseModal = (): void => {
     setOpen(false)
-  }
-
-  const handleDeleteLine = () => {
-    // dispatch()
-    const x = onDelete()
-
-    console.log('zzzzz', x)
   }
 
   return (<>
@@ -49,7 +39,6 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete, ...rest }) => {
           <DeleteIcon/>
         </Button>
       </Flex>
-
 
       <Modal
         isCentered
@@ -67,7 +56,7 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete, ...rest }) => {
             <Button colorScheme='blue' mr='auto' onClick={handleCloseModal}>
               No
             </Button>
-            <Button variant='outline' onClick={handleDeleteLine}>Yes</Button>
+            <Button variant='outline' onClick={onDelete}>Yes</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

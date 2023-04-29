@@ -2,20 +2,12 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Board from 'react-trello-ts'
 
-import { fetchData, deleteColumn } from '@store/columns/asyncActions'
+import { fetchData, deleteColumn, addColumn } from '@store/columns/asyncActions'
 import { useAppDispatch } from '@store/store'
 import { selectColumns } from '@store/columns/selectors'
-import Column from './Column'
 import LaneHeader from './LaneHeader'
 
 import Preloader from '@components/Preloader'
-
-const defaultCol = {
-  id: 'lane3',
-  title: 'lol',
-  label: '3/4',
-  cards: []
-}
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -30,29 +22,24 @@ const Home: React.FC = () => {
     })()
   }, [])
 
-  const handleClick = (): void => {
-    setColumns(prev => ({ lanes: [...prev.lanes, defaultCol] }))
+  if (items.length === 0) return <Preloader/>
+
+  const components: Record<string, any> = {
+    LaneHeader
   }
-
-  console.log(items)
-
-  if(!items.length) return <Preloader/>
-
-  const components = {
-    // AddCardLink:  () => <button>New Card</button>,
-    NewLaneSection: Column,
-    LaneHeader: (props) => <LaneHeader {...props} id='xxxx'/>
-  }
-
-  console.log('xxxxx')
 
   return <div>
     <Board
       components={components}
       canAddLanes
-      onLaneDelete={ async (id: string) => {
-        await dispatch(deleteColumn(id))
-      }}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onLaneDelete={async (id) => await dispatch(deleteColumn(id))}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onLaneAdd={ async (params) => await dispatch(addColumn({
+        id: params.laneId,
+        title: params.title,
+        label: params.label
+      }))}
       editable
       data={{ lanes: items }}
     />
