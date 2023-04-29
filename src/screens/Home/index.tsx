@@ -22,28 +22,34 @@ const Home: React.FC = () => {
     })()
   }, [])
 
-  if (items.length === 0) return <Preloader/>
+  if (items.length === 0) return <Preloader />
 
   const components: Record<string, any> = {
-    LaneHeader
+    LaneHeader,
   }
 
-  return <div>
-    <Board
-      components={components}
-      canAddLanes
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onLaneDelete={async (id) => await dispatch(deleteColumn(id))}
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onLaneAdd={ async (params) => await dispatch(addColumn({
-        id: params.laneId,
-        title: params.title,
-        label: params.label
-      }))}
-      editable
-      data={{ lanes: items }}
-    />
-  </div>
+  return (
+    <div>
+      <Board
+        components={components}
+        canAddLanes
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onLaneDelete={async (id) => await dispatch(deleteColumn(id))}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onLaneAdd={async (params) =>
+          await dispatch(
+            addColumn({
+              id: params.laneId,
+              title: params.title,
+              label: params.label,
+            })
+          )
+        }
+        editable
+        data={{ lanes: items }}
+      />
+    </div>
+  )
 }
 
 export default Home

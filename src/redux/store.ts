@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import column from './columns/slice'
 
 export const store = configureStore({
-  reducer: { column }
+  reducer: { column },
 })
 
 export type RootState = ReturnType<typeof store.getState>

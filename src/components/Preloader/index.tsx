@@ -11,13 +11,13 @@ const boxStyles = {
   zIndex: 999,
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 }
 
 const Preloader: React.FC = () => (
-    <Box sx={boxStyles}>
-      <Spinner/>
-    </Box>
+  <Box sx={boxStyles}>
+    <Spinner />
+  </Box>
 )
 
 export default Preloader

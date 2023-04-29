@@ -16,7 +16,7 @@ export interface ColumnT {
 export enum StatusE {
   LOADING = 'loading',
   SUCCESS = 'success',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export interface ColumnI {

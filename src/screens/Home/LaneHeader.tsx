@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalContent,
   ModalCloseButton,
-  ModalFooter
+  ModalFooter,
 } from '@chakra-ui/react'
 
 interface Props {
@@ -30,32 +30,31 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete }) => {
     setOpen(false)
   }
 
-  return (<>
-      <Flex align='center' justify='space-between'>
+  return (
+    <>
+      <Flex align="center" justify="space-between">
         <Box>{title}</Box>
         <Box>{label}</Box>
-        <Button onClick={handleOpenModal} colorScheme='red' size='xs'>
-          <DeleteIcon/>
+        <Button onClick={handleOpenModal} colorScheme="red" size="xs">
+          <DeleteIcon />
         </Button>
       </Flex>
 
-      <Modal
-        isCentered
-        isOpen={open}
-        size='xs'
-        onClose={handleCloseModal}>
+      <Modal isCentered isOpen={open} size="xs" onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign='center'>
+          <ModalHeader textAlign="center">
             {`Do you really wont to delete ${title}`}
           </ModalHeader>
-          <ModalCloseButton onClick={handleCloseModal}/>
+          <ModalCloseButton onClick={handleCloseModal} />
 
           <ModalFooter>
-            <Button colorScheme='blue' mr='auto' onClick={handleCloseModal}>
+            <Button colorScheme="blue" mr="auto" onClick={handleCloseModal}>
               No
             </Button>
-            <Button variant='outline' onClick={onDelete}>Yes</Button>
+            <Button variant="outline" onClick={onDelete}>
+              Yes
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
