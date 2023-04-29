@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalContent,
   ModalCloseButton,
-  ModalFooter,
+  ModalFooter
 } from '@chakra-ui/react'
 
 interface Props {

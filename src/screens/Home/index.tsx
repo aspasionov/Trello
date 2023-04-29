@@ -25,7 +25,7 @@ const Home: React.FC = () => {
   if (items.length === 0) return <Preloader />
 
   const components: Record<string, any> = {
-    LaneHeader,
+    LaneHeader
   }
 
   return (
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
             addColumn({
               id: params.laneId,
               title: params.title,
-              label: params.label,
+              label: params.label
             })
           )
         }

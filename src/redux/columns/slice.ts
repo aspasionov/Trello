@@ -6,7 +6,7 @@ import { fetchData, deleteColumn, addColumn } from './asyncActions'
 
 const initialState: ColumnI = {
   items: [],
-  status: StatusE.LOADING,
+  status: StatusE.LOADING
 }
 
 export const columnsSlice = createSlice({
@@ -15,7 +15,7 @@ export const columnsSlice = createSlice({
   reducers: {
     setColumns: (state, action: PayloadAction<ColumnT[]>) => {
       state.items = action.payload
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -42,7 +42,7 @@ export const columnsSlice = createSlice({
         state.items.push(column)
         state.status = StatusE.SUCCESS
       })
-  },
+  }
 })
 
 export const { setColumns } = columnsSlice.actions

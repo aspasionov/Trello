@@ -6,7 +6,7 @@ import type { CardT, ColumnT } from './types'
 export const fetchData = createAsyncThunk('column/fetchData', async () => {
   const [{ data: cardsData }, { data: columnsData }] = await Promise.all([
     fetchAllCards(),
-    fetchAll(),
+    fetchAll()
   ])
 
   const columnWithCards: ColumnT[] = columnsData.map((el: ColumnT) => {
@@ -15,7 +15,7 @@ export const fetchData = createAsyncThunk('column/fetchData', async () => {
     )
     return {
       ...el,
-      cards: currentCards,
+      cards: currentCards
     }
   })
 

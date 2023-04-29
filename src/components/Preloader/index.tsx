@@ -11,7 +11,7 @@ const boxStyles = {
   zIndex: 999,
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'center'
 }
 
 const Preloader: React.FC = () => (

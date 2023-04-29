@@ -3,15 +3,15 @@ import type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosError,
-  InternalAxiosRequestConfig,
+  InternalAxiosRequestConfig
 } from 'axios'
 
 const initialConfig: AxiosRequestConfig = {
   baseURL: 'https://62b851d3f4cb8d63df5be487.mockapi.io',
   headers: {
     'Content-Type': 'application/json',
-    timeout: 1000,
-  },
+    timeout: 1000
+  }
 }
 
 const onRequest = (
