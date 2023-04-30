@@ -1,23 +1,26 @@
 import instance from '@api/base.api'
 
-export const fetchAll = async (): Promise<unknown> => {
+import type { CardT } from '@store/columns/types'
+
+export const fetchAll = async (): Promise<any> => {
   return await instance({
     url: '/cards',
     method: 'GET'
   })
 }
 
-export const deleteOne = async (id: string): Promise<unknown> => {
+export const deleteOne = async (id: string): Promise<any> => {
   return await instance({
     url: `/cards/${id}`,
     method: 'DELETE'
   })
 }
 
-export const addOne = async (): Promise<unknown> => {
+export const addOne = async (card: CardT): Promise<any> => {
   return await instance({
     url: '/cards',
-    method: 'POST'
+    method: 'POST',
+    data: card
   })
 }
 

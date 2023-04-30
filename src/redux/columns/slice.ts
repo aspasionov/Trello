@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { ColumnT, ColumnI } from './types'
 import { StatusE } from './types'
-import { fetchData, deleteColumn } from './asyncActions'
+import { fetchData, deleteColumn, addColumn } from './asyncActions'
 
 const initialState: ColumnI = {
   items: [],
@@ -33,8 +33,13 @@ export const columnsSlice = createSlice({
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {
         const { id } = action.payload
-        const prevColumns = state.items.filter(column => column.id !== id)
+        const prevColumns = state.items.filter((column) => column.id !== id)
         state.items = prevColumns
+        state.status = StatusE.SUCCESS
+      })
+      .addCase(addColumn.fulfilled, (state, action) => {
+        const column = action.payload
+        state.items.push(column)
         state.status = StatusE.SUCCESS
       })
   }

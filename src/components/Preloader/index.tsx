@@ -15,9 +15,9 @@ const boxStyles = {
 }
 
 const Preloader: React.FC = () => (
-    <Box sx={boxStyles}>
-      <Spinner/>
-    </Box>
+  <Box sx={boxStyles}>
+    <Spinner />
+  </Box>
 )
 
 export default Preloader
