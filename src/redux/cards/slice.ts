@@ -32,7 +32,9 @@ export const columnsSlice = createSlice({
         state.status = StatusE.LOADING
       })
       .addCase(deleteCard.fulfilled, (state, action) => {
-        const prevCards = state.cards.filter((card) => card.id !== action.payload)
+        const prevCards = state.cards.filter(
+          (card) => card.id !== action.payload
+        )
         state.cards = prevCards
         state.status = StatusE.SUCCESS
       })

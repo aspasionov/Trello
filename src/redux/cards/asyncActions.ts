@@ -2,13 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchAll, updateOne, addOne, deleteOne } from '@api/cards.api'
 import type { CardT } from './types'
 
-export const fetchCards = createAsyncThunk(
-  'column/fetchCards',
-  async () => {
-    const response = await fetchAll()
-    return response.data
-  }
-)
+export const fetchCards = createAsyncThunk('column/fetchCards', async () => {
+  const response = await fetchAll()
+  return response.data
+})
 
 export const updateCard = createAsyncThunk(
   'column/updateCard',

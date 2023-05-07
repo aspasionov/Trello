@@ -24,7 +24,10 @@ export const addOne = async (card: CardT): Promise<{ data: CardT }> => {
   })
 }
 
-export const updateOne = async (id: string, card: CardT): Promise<{ data: CardT }> => {
+export const updateOne = async (
+  id: string,
+  card: CardT
+): Promise<{ data: CardT }> => {
   return await instance({
     url: `/cards/${id}`,
     method: 'PUT',

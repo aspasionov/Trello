@@ -2,7 +2,11 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Board from 'react-trello-ts'
 
-import { fetchColumns, deleteColumn, addColumn } from '@store/columns/asyncActions'
+import {
+  fetchColumns,
+  deleteColumn,
+  addColumn
+} from '@store/columns/asyncActions'
 import { fetchCards, addCard } from '@store/cards/asyncActions'
 import { useAppDispatch } from '@store/store'
 import { selectColumns } from '@store/columns/selectors'
@@ -32,16 +36,18 @@ const Home: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    const columnWithCards: ColumnT[] = columns.map((el: ColumnT, index: number) => {
-      const currentCards = cards.filter(
-        (card: CardT) => el.id === card.columnId
-      )
-      return {
-        ...el,
-        order: index,
-        cards: currentCards
+    const columnWithCards: ColumnT[] = columns.map(
+      (el: ColumnT, index: number) => {
+        const currentCards = cards.filter(
+          (card: CardT) => el.id === card.columnId
+        )
+        return {
+          ...el,
+          order: index,
+          cards: currentCards
+        }
       }
-    })
+    )
     dispatch(setColumns(columnWithCards))
   }, [cards])
 
@@ -66,11 +72,9 @@ const Home: React.FC = () => {
             title: params.title,
             label: params.label
           }
-          await dispatch(
-            addColumn(newColumn as ColumnT)
-          )
+          await dispatch(addColumn(newColumn as ColumnT))
         }}
-        onCardAdd= { (card, laneId) => {
+        onCardAdd={(card, laneId) => {
           void (async () => {
             const newCard: Partial<CardT & { draggable: boolean }> = {
               ...card,
@@ -94,7 +98,9 @@ const Home: React.FC = () => {
         //   }
         //   await dispatch(updateCard(newCard as CardT))
         // }}
-        onCardUpdate={(cardId, card) => { console.log('xxx', cardId, card) }}
+        onCardUpdate={(cardId, card) => {
+          console.log('xxx', cardId, card)
+        }}
         // onDataChange={(newData) => console.log(newData)}
         editable
         cardDraggable

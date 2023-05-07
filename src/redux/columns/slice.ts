@@ -32,7 +32,9 @@ export const columnsSlice = createSlice({
         state.status = StatusE.LOADING
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {
-        const prevColumns = state.items.filter((column) => column.id !== action.payload)
+        const prevColumns = state.items.filter(
+          (column) => column.id !== action.payload
+        )
         state.items = prevColumns
         state.status = StatusE.SUCCESS
       })
