@@ -1,16 +1,11 @@
-export interface CardT {
-  id: string
-  description: string
-  label: string
-  columnId: string
-  title: string
-}
+import type { CardT } from '../cards/types'
 
 export interface ColumnT {
   id: string
   label: string
   title: string
-  cards?: CardT[]
+  order: number
+  cards: CardT[]
 }
 
 export enum StatusE {

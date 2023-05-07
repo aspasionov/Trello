@@ -2,21 +2,21 @@ import instance from '@api/base.api'
 
 import type { CardT } from '@store/columns/types'
 
-export const fetchAll = async (): Promise<any> => {
-  return await instance({
+export const fetchAll = async (): Promise<{ data: CardT[] }> => {
+  return await instance<CardT[]>({
     url: '/cards',
     method: 'GET'
   })
 }
 
-export const deleteOne = async (id: string): Promise<any> => {
+export const deleteOne = async (id: string): Promise<{ data: CardT }> => {
   return await instance({
     url: `/cards/${id}`,
     method: 'DELETE'
   })
 }
 
-export const addOne = async (card: CardT): Promise<any> => {
+export const addOne = async (card: CardT): Promise<{ data: CardT }> => {
   return await instance({
     url: '/cards',
     method: 'POST',
@@ -24,9 +24,10 @@ export const addOne = async (card: CardT): Promise<any> => {
   })
 }
 
-export const updateOne = async (id: string): Promise<unknown> => {
+export const updateOne = async (id: string, card: CardT): Promise<{ data: CardT }> => {
   return await instance({
     url: `/cards/${id}`,
-    method: 'PUT'
+    method: 'PUT',
+    data: card
   })
 }

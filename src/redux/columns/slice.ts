@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { ColumnT, ColumnI } from './types'
 import { StatusE } from './types'
-import { fetchData, deleteColumn, addColumn } from './asyncActions'
+import { deleteColumn, addColumn, fetchColumns } from './asyncActions'
 
 const initialState: ColumnI = {
   items: [],
@@ -19,27 +19,25 @@ export const columnsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchData.fulfilled, (state, action) => {
+      .addCase(fetchColumns.fulfilled, (state, action) => {
         state.items = action.payload
         state.status = StatusE.SUCCESS
       })
-      .addCase(fetchData.rejected, (state, action) => {
+      .addCase(fetchColumns.rejected, (state, action) => {
         state.items = []
         state.status = StatusE.ERROR
       })
-      .addCase(fetchData.pending, (state, action) => {
+      .addCase(fetchColumns.pending, (state, action) => {
         state.items = []
         state.status = StatusE.LOADING
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {
-        const { id } = action.payload
-        const prevColumns = state.items.filter((column) => column.id !== id)
+        const prevColumns = state.items.filter((column) => column.id !== action.payload)
         state.items = prevColumns
         state.status = StatusE.SUCCESS
       })
       .addCase(addColumn.fulfilled, (state, action) => {
-        const column = action.payload
-        state.items.push(column)
+        state.items.push(action.payload)
         state.status = StatusE.SUCCESS
       })
   }
