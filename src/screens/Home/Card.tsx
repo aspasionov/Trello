@@ -52,8 +52,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
   return (
     <Box p={2} mb={1} bg="white" maxWidth={250} rounded="md">
       <Flex align="center" justify="space-between">
-        {editable.title
-          ? (
+        {editable.title ? (
           <Input
             value={card.title}
             name="title"
@@ -70,8 +69,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
             placeholder="Title"
             size="xs"
           />
-            )
-          : (
+        ) : (
           <Heading
             as="h6"
             size="xs"
@@ -86,17 +84,14 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
               })()
             }}
           >
-            {card.title === ''
-              ? (
+            {card.title === '' ? (
               <Text color="#ccc">Edit title</Text>
-                )
-              : (
-                  card.title
-                )}
-          </Heading>
+            ) : (
+              card.title
             )}
-        {editable.label
-          ? (
+          </Heading>
+        )}
+        {editable.label ? (
           <Input
             value={card.label}
             name="label"
@@ -113,8 +108,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
             placeholder="Label"
             size="xs"
           />
-            )
-          : (
+        ) : (
           <Heading
             as="h6"
             size="xs"
@@ -129,20 +123,17 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
               })()
             }}
           >
-            {card.label === ''
-              ? (
+            {card.label === '' ? (
               <Text color="#ccc">Edit label</Text>
-                )
-              : (
-                  card.label
-                )}
-          </Heading>
+            ) : (
+              card.label
             )}
+          </Heading>
+        )}
       </Flex>
 
       <Flex mt={1} align="center" justify="space-between">
-        {editable.description
-          ? (
+        {editable.description ? (
           <Input
             value={card.description}
             name="description"
@@ -157,8 +148,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
             placeholder="Description"
             size="xs"
           />
-            )
-          : (
+        ) : (
           <Heading
             as="h6"
             size="sm"
@@ -173,15 +163,13 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
               })()
             }}
           >
-            {card.description === ''
-              ? (
+            {card.description === '' ? (
               <Text color="#ccc">Edit description</Text>
-                )
-              : (
-                  card.description
-                )}
-          </Heading>
+            ) : (
+              card.description
             )}
+          </Heading>
+        )}
         <Box w="10%" sx={{ flex: '0 0 auto' }} flexGrow={0}>
           <IconButton
             aria-label="Delete task"

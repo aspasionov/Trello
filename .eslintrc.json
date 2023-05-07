@@ -12,5 +12,7 @@
     },
     "parser": "@typescript-eslint/parser",
     "plugins": ["react"],
-    "rules": {}
+    "rules": {
+      "multiline-ternary": "off"
+    }
 }
