@@ -23,9 +23,13 @@ export const addOne = async (column: ColumnT): Promise<any> => {
   })
 }
 
-export const updateOne = async (id: string): Promise<unknown> => {
+export const updateOne = async (
+  id: string,
+  column: ColumnT
+): Promise<{ data: ColumnT }> => {
   return await instance({
     url: `/columns/${id}`,
-    method: 'PUT'
+    method: 'PUT',
+    data: column
   })
 }

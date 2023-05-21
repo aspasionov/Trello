@@ -5,13 +5,13 @@ import Board from 'react-trello-ts'
 import {
   fetchColumns,
   deleteColumn,
+  updateColumn,
   addColumn
 } from '@store/columns/asyncActions'
-import { fetchCards, addCard } from '@store/cards/asyncActions'
 import { useAppDispatch } from '@store/store'
-import { selectColumns } from '@store/columns/selectors'
-import { setColumns } from '@store/columns/slice'
-import { selectCards } from '@store/cards/selectors'
+import { selectColumns, selectStatus } from '@store/columns/selectors'
+import { addNewCard } from '@store/columns/slice'
+import { StatusE } from '@store/columns/types'
 import LaneHeader from './LaneHeader'
 import Card from './Card'
 
@@ -22,36 +22,17 @@ import type { CardT } from '@store/cards/types'
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
   const columns = useSelector(selectColumns)
-  const cards = useSelector(selectCards)
+  const status = useSelector(selectStatus)
 
   useEffect(() => {
     void (async () => {
       try {
         await dispatch(fetchColumns())
-        await dispatch(fetchCards())
       } catch (e) {
         console.error(e)
       }
     })()
   }, [])
-
-  useEffect(() => {
-    const columnWithCards: ColumnT[] = columns.map(
-      (el: ColumnT, index: number) => {
-        const currentCards = cards.filter(
-          (card: CardT) => el.id === card.columnId
-        )
-        return {
-          ...el,
-          order: index,
-          cards: currentCards
-        }
-      }
-    )
-    dispatch(setColumns(columnWithCards))
-  }, [cards])
-
-  if (columns.length === 0 || cards.length === 0) return <Preloader />
 
   const components: Record<string, any> = {
     LaneHeader,
@@ -76,12 +57,22 @@ const Home: React.FC = () => {
         }}
         onCardAdd={(card, laneId) => {
           void (async () => {
+            const currentCol = columns.find((el) => el.id === laneId)
             const newCard: Partial<CardT & { draggable: boolean }> = {
               ...card,
               draggable: true,
               columnId: laneId
             }
-            await dispatch(addCard(newCard as CardT))
+
+            const updatedNewColumn: Partial<ColumnT> = {
+              ...currentCol,
+              cards:
+                currentCol === undefined
+                  ? []
+                  : ([...currentCol.cards, newCard] as CardT[])
+            }
+            dispatch(addNewCard(newCard as CardT))
+            await dispatch(updateColumn(updatedNewColumn as ColumnT))
           })()
         }}
         // handleDragStart={(cardId, laneId) => {
@@ -91,21 +82,50 @@ const Home: React.FC = () => {
         //   console.log('currentColumn', currentColumn)
         //   dispatch(setColumns([]))
         // }}
-        // handleDragEnd={async (cardId, sourceLaneId, targetLaneId, position, cardDetails) => {
-        //   const newCard: Partial<CardT> = {
-        //     ...cardDetails,
-        //     columnId: targetLaneId
-        //   }
-        //   await dispatch(updateCard(newCard as CardT))
-        // }}
-        onCardUpdate={(cardId, card) => {
-          console.log('xxx', cardId, card)
+        handleDragEnd={(
+          cardId,
+          sourceLaneId,
+          targetLaneId,
+          position,
+          cardDetails
+        ) => {
+          void (async () => {
+            const newColumn = columns.find((el) => el.id === targetLaneId)
+            const oldLine = columns.find((el) => el.id === sourceLaneId)
+            const newCard: Partial<CardT> = {
+              ...cardDetails,
+              columnId: targetLaneId
+            }
+
+            const updatedOldColumn: Partial<ColumnT> = {
+              ...oldLine,
+              cards:
+                oldLine === undefined
+                  ? []
+                  : oldLine.cards.filter((card) => card.id !== cardId)
+            }
+
+            const updatedNewColumn: Partial<ColumnT> = {
+              ...newColumn,
+              cards:
+                newColumn === undefined
+                  ? []
+                  : ([...newColumn.cards, newCard] as CardT[])
+            }
+            await dispatch(updateColumn(updatedOldColumn as ColumnT))
+            await dispatch(updateColumn(updatedNewColumn as ColumnT))
+          })()
         }}
-        // onDataChange={(newData) => console.log(newData)}
+        // onCardUpdate={(cardId, card) => {
+        //   console.log('xxx', cardId, card)
+        // }}
+        // onDataChange={(newData) => console.log('newData', newData)}
         editable
         cardDraggable
         data={{ lanes: columns }}
       />
+
+      {status === StatusE.LOADING && <Preloader />}
     </div>
   )
 }
