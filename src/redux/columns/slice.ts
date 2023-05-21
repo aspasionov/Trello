@@ -32,8 +32,8 @@ export const columnsSlice = createSlice({
           updatedColumn === undefined
             ? []
             : updatedColumn.cards.filter(
-              (item) => item.id !== action.payload.id
-            )
+                (item) => item.id !== action.payload.id
+              )
       }
       const updatedColumns = current(state.items).filter(
         (column) => column.id !== action.payload.columnId
