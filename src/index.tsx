@@ -7,17 +7,12 @@ import { store } from '@store/store'
 import { Provider } from 'react-redux'
 
 import Home from './screens/Home'
-import Test from './screens/Test'
 import './styles.css'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />
-  },
-  {
-    path: '/test',
-    element: <Test />
   }
 ])
 
