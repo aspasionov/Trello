@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { Box, Flex, Input, Text, Heading, IconButton } from '@chakra-ui/react'
-import { updateColumn } from '@store/columns/asyncActions'
+import { updateColumn, fetchColumns } from '@store/columns/asyncActions'
 import { useAppDispatch } from '@store/store'
 import type { CardProps } from 'react-trello-ts/dist/components/Card'
 import type { CardT } from '@store/cards/types'
 import { useSelector } from 'react-redux'
 import { selectColumns } from '@store/columns/selectors'
-import { removeCard } from '@store/columns/slice'
 import type { ColumnT } from '@store/columns/types'
 
 interface EditableI {
@@ -74,8 +73,9 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
           ? []
           : updatedColumn.cards.filter((item) => item.id !== card.id)
     }
-    dispatch(removeCard(card))
+    // dispatch(removeCard(card))
     await dispatch(updateColumn(newColumn as ColumnT))
+    await dispatch(fetchColumns())
   }
 
   return (
