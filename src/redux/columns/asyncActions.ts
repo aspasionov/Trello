@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchAll, deleteOne, addOne } from '@api/columns.api'
+import { fetchAll, deleteOne, addOne, updateOne } from '@api/columns.api'
 import type { ColumnT } from './types'
 
 export const fetchColumns = createAsyncThunk(
@@ -22,6 +22,14 @@ export const addColumn = createAsyncThunk(
   'column/addColumn',
   async (column: ColumnT) => {
     const response = await addOne(column)
+    return response.data
+  }
+)
+
+export const updateColumn = createAsyncThunk(
+  'column/updateColumn',
+  async (column: ColumnT) => {
+    const response = await updateOne(column.id, column)
     return response.data
   }
 )
