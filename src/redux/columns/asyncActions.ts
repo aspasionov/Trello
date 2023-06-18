@@ -1,12 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchAll, deleteOne, addOne, updateOne } from '@api/columns.api'
+import uniqid from 'uniqid'
+
 import type { ColumnT } from './types'
 
 export const fetchColumns = createAsyncThunk(
   'column/fetchColumns',
   async () => {
     const response = await fetchAll()
-    return response.data
+    const dataWithId = response.data.map((el: ColumnT) => ({
+      ...el,
+      id: uniqid(),
+      dbId: el.id
+    }))
+    return dataWithId
   }
 )
 
@@ -29,7 +36,7 @@ export const addColumn = createAsyncThunk(
 export const updateColumn = createAsyncThunk(
   'column/updateColumn',
   async (column: ColumnT) => {
-    const response = await updateOne(column.id, column)
+    const response = await updateOne(column.dbId, column)
     return response.data
   }
 )

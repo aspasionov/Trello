@@ -20,7 +20,13 @@ export const columnsSlice = createSlice({
   initialState,
   reducers: {
     setColumns: (state, action: PayloadAction<ColumnT[]>) => {
-      state.items = action.payload
+      state.items = action.payload.sort((a, b) => a.order - b.order)
+    },
+    addNewColumn: (state, action: PayloadAction<ColumnT>) => {
+      state.items.push(action.payload)
+    },
+    removeColumn: (state, action: PayloadAction<number>) => {
+      state.items.splice(action.payload, 1)
     },
     removeCard: (state, action: PayloadAction<CardT>) => {
       const updatedColumn = state.items.find(
@@ -63,14 +69,6 @@ export const columnsSlice = createSlice({
         state.items = action.payload
         state.status = StatusE.SUCCESS
       })
-      .addCase(fetchColumns.rejected, (state, action) => {
-        state.items = []
-        state.status = StatusE.ERROR
-      })
-      .addCase(fetchColumns.pending, (state, action) => {
-        state.items = []
-        state.status = StatusE.LOADING
-      })
       .addCase(deleteColumn.fulfilled, (state, action) => {
         const prevColumns = state.items.filter(
           (column) => column.id !== action.payload
@@ -88,6 +86,6 @@ export const columnsSlice = createSlice({
   }
 })
 
-export const { setColumns, removeCard, addNewCard } = columnsSlice.actions
+export const { setColumns, removeColumn, addNewColumn } = columnsSlice.actions
 
 export default columnsSlice.reducer

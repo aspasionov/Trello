@@ -24,7 +24,7 @@ const defaultState = {
 const Card: React.FC<CardProps & { columnId: string }> = (props) => {
   const { id, title, label, description } = props
   const [editable, setEditable] = useState<EditableI>(defaultState)
-  const [card, setCard] = useState<CardT>({
+  const [card, setCard] = useState<Partial<CardT>>({
     id,
     title: title ?? '',
     label: label ?? '',
@@ -49,7 +49,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
             ? []
             : [
                 ...currentColumn.cards.filter((item) => item.id !== card.id),
-                card
+                card as CardT
               ]
       }
       await dispatch(updateColumn(updatedCurrentColumn as ColumnT))
@@ -65,7 +65,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
   }
 
   const handleDelete = async (): Promise<void> => {
-    const updatedColumn = columns.find((el) => el.id === card.columnId)
+    const updatedColumn = columns.find((el) => el.dbId === card.columnId)
     const newColumn: Partial<ColumnT> = {
       ...updatedColumn,
       cards:
@@ -73,7 +73,6 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
           ? []
           : updatedColumn.cards.filter((item) => item.id !== card.id)
     }
-    // dispatch(removeCard(card))
     await dispatch(updateColumn(newColumn as ColumnT))
     await dispatch(fetchColumns())
   }
