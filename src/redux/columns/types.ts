@@ -4,8 +4,9 @@ export interface ColumnT {
   id: string
   label: string
   title: string
+  dbId: string
   order: number
-  cards: CardT[]
+  cards: CardT[] | []
 }
 
 export enum StatusE {

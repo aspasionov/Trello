@@ -6,6 +6,7 @@ export interface CardT {
   label: string
   columnId: string
   title: string
+  order: number
 }
 
 export interface CardI {
