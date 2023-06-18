@@ -24,9 +24,9 @@ import { setColumns } from '@store/columns/slice'
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
   const columns = useSelector(selectColumns)
+  const status = useSelector(selectStatus)
 
   console.log('columns', columns)
-  const status = useSelector(selectStatus)
 
   useEffect(() => {
     void (async () => {
@@ -38,11 +38,21 @@ const Home: React.FC = () => {
     })()
   }, [])
 
-  const cardsWidthPosition = (items: CardT[], position: number = 0): CardT[] =>
-    items.map((el, idx) => ({
-      ...el,
-      order: position >= el.order && position !== 0 ? (position += 1) : idx
-    }))
+  const cardsWidthPosition = (
+    items: CardT[],
+    obj: CardT | null = null
+  ): CardT[] => {
+    const copyArr = [...items]
+    if (obj !== null) copyArr.splice(obj.order, 0, obj)
+
+    const arrWithNewIndex = copyArr.map((el, idx) => {
+      return {
+        ...el,
+        order: idx
+      }
+    })
+    return arrWithNewIndex
+  }
 
   const handleDragEnd = async (
     cardId: string,
@@ -58,7 +68,6 @@ const Home: React.FC = () => {
       order: position,
       columnId: newColumn?.dbId
     }
-
     const updatedOldColumn: Partial<ColumnT> = {
       ...oldLine,
       cards:
@@ -74,10 +83,7 @@ const Home: React.FC = () => {
       cards:
         newColumn === undefined
           ? []
-          : cardsWidthPosition(
-              [...newColumn.cards, newCard] as CardT[],
-              position
-            )
+          : cardsWidthPosition(newColumn.cards as CardT[], newCard as CardT)
     }
 
     await dispatch(updateColumn(updatedNewColumn as ColumnT))

@@ -41,7 +41,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
   ): Promise<any> => {
     setEditable((prev) => ({ ...prev, [key]: !prev[key] }))
     if (isBlurEvent) {
-      const currentColumn = columns.find((el) => el.id === card.columnId)
+      const currentColumn = columns.find((el) => el.dbId === card.columnId)
       const updatedCurrentColumn: Partial<ColumnT> = {
         ...currentColumn,
         cards:
