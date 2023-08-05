@@ -15,6 +15,7 @@ export interface UserT {
   password?: string
   isAuth?: boolean
   avatarUrl?: string
+  token?: string
   __v?: number
   _id?: string
 }

@@ -6,12 +6,11 @@ import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
 import Home from './screens/Home'
 import { getCurrentUser } from '@store/user/asyncActions'
+import { setUser } from '@store/user/slice'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@store/user/selectors'
 import Preloader from '@components/Preloader'
 import ProtectedRoute from '@components/ProtectedRoute'
-
-
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -22,7 +21,7 @@ const App: React.FC = () => {
     {
       path: '/',
       element: (
-        <ProtectedRoute isAuth={user?.isAuth !== undefined}>
+        <ProtectedRoute isAuth={user?.isAuth !== false}>
           <Home />
         </ProtectedRoute>
       )
@@ -40,19 +39,21 @@ const App: React.FC = () => {
   useEffect(() => {
     void (async () => {
       const token: string | null = localStorage.getItem('TrelloToken')
-      if (true) {
-        instance.defaults.headers.common.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5N2U0NzZjZDlmMDJjYzcxYWFhN2IiLCJpYXQiOjE2ODk4NzkxMzIsImV4cCI6MTY5MjQ3MTEzMn0.libVbfttCuWnrF3SWZ61uUVh_XXEnd8gh80MSqsbhrQ`
+      if (token !== null) {
+        instance.defaults.headers.common.Authorization = `Bearer ${token}`
         try {
           await dispatch(getCurrentUser())
         } catch (err) {
           console.error(err)
         }
+      } else {
+        dispatch(setUser({ isAuth: false }))
       }
     })()
   }, [])
 
-  if(!user) {
-    return <Preloader/>
+  if (user === null) {
+    return <Preloader />
   }
 
   return <RouterProvider router={router} />

@@ -2,17 +2,24 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { getUser, loginUser, registerUser } from '@api/user.api'
 import type { UserT } from './types'
 
-export const getCurrentUser = createAsyncThunk('auth/me', async () => {
-  const response = await getUser()
-  return { ...response, isAuth: true }
-})
+export const getCurrentUser = createAsyncThunk(
+  'auth/me',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getUser()
+      return response as UserT
+    } catch (err) {
+      rejectWithValue({ isAuth: false })
+    }
+  }
+)
 
 export const login = createAsyncThunk(
   'auth/login',
   async (data: UserT, { rejectWithValue }) => {
     try {
       const response = await loginUser(data)
-      return response
+      return response as UserT
     } catch (err) {
       if (err instanceof Error) {
         throw err
@@ -22,14 +29,15 @@ export const login = createAsyncThunk(
       }
       return 'Something went wrong'
     }
-})
+  }
+)
 
 export const register = createAsyncThunk(
   'auth/register',
   async (data: UserT, { rejectWithValue }) => {
     try {
       const response = await registerUser(data)
-      return response
+      return response as UserT
     } catch (err) {
       if (err instanceof Error) {
         throw err

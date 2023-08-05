@@ -6,7 +6,6 @@ import { store } from '@store/store'
 import { ChakraProvider } from '@chakra-ui/react'
 import { Provider } from 'react-redux'
 
-
 const appRouting = (
   <Provider store={store}>
     <ChakraProvider>

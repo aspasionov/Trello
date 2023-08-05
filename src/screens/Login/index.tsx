@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Flex,
   Center,
@@ -9,12 +10,11 @@ import {
   FormLabel,
   FormErrorMessage,
   Button,
-  Text,
+  Text
 } from '@chakra-ui/react'
 import { useAppDispatch } from '@store/store'
 import { login } from '@store/user/asyncActions'
 import type { UserT } from '@store/user/types'
-import { Link } from 'react-router-dom'
 
 interface StateT {
   email: string
@@ -59,6 +59,7 @@ const LoginScreen: React.FC = () => {
     errors: {}
   })
   const appDispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const onChange = (type: string, value: string): void => {
     dispatch({
@@ -70,7 +71,13 @@ const LoginScreen: React.FC = () => {
   const handleClick = async (): Promise<void> => {
     const { errors, ...restState } = state
     try {
-      await appDispatch(login(restState as UserT)).unwrap()
+      const user = await appDispatch(login(restState as UserT)).unwrap()
+      if (typeof user === 'object') {
+        if (user?.token !== undefined) {
+          localStorage.setItem('TrelloToken', user.token)
+          navigate('/')
+        }
+      }
     } catch (err) {
       const objErrors = Object.assign({}, ...(err as any[]))
       dispatch({ type: 'set-errors', value: objErrors })

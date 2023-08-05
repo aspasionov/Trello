@@ -24,7 +24,11 @@ export const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCurrentUser.fulfilled, (state, action) => {
-        state.user = action.payload
+        state.user = action.payload as UserT
+        state.status = StatusE.SUCCESS
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
+        state.user = action.payload as UserT
         state.status = StatusE.SUCCESS
       })
       .addCase(login.fulfilled, (state, action) => {
