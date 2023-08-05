@@ -25,7 +25,6 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch()
   const columns = useSelector(selectColumns)
 
-  console.log('columns', columns)
   const status = useSelector(selectStatus)
 
   useEffect(() => {

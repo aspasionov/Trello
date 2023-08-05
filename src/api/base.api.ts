@@ -3,11 +3,12 @@ import type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosError,
+  AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios'
 
 const initialConfig: AxiosRequestConfig = {
-  baseURL: 'https://62b851d3f4cb8d63df5be487.mockapi.io',
+  baseURL: 'http://localhost:3333/',
   headers: {
     'Content-Type': 'application/json',
     timeout: 1000
@@ -20,11 +21,21 @@ const onRequest = (
   return { ...initialConfig, ...config }
 }
 
+const onResponse = (response: AxiosResponse): AxiosResponse => {
+  return response.data
+}
+
 const onRequestError = async (error: AxiosError): Promise<AxiosError> => {
+  throw error
+}
+
+const onResponseError = async (error: AxiosError): Promise<unknown> => {
+  // console.log('error', error.response)
   throw error
 }
 
 export const instance: AxiosInstance = axios.create()
 instance.interceptors.request.use(onRequest, onRequestError)
+instance.interceptors.response.use(onResponse, onResponseError)
 
 export default instance
