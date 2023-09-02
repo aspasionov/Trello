@@ -2,11 +2,15 @@
     "compilerOptions": {
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "types": ["vite/client"],
         "strict": true,
         "jsx": "react",
         "lib": [
           "es2015.promise",
-          "dom"
+          "dom",
+          "es2015.iterable"
         ],
         "baseUrl": ".",
         "paths": {

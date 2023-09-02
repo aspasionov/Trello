@@ -1,14 +1,37 @@
 import React from 'react'
-import Field from '@components/Field'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import LoginScreen from './screens/Login'
+import RegisterScreen from './screens/Register'
+import Home from './screens/Home'
+import ProtectedRoute from '@components/ProtectedRoute'
+import AuthLayout from '@components/AuthLayout'
 
-import img from '@static/images/spin_on.png'
+const App: React.FC = () => {
+  const router = createBrowserRouter([
+    {
+      element: <AuthLayout />,
+      children: [
+        {
+          path: '/',
+          element: (
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          )
+        },
+        {
+          path: '/login',
+          element: <LoginScreen />
+        },
+        {
+          path: '/register',
+          element: <RegisterScreen />
+        }
+      ]
+    }
+  ])
 
-const App: React.FC = () => (
-  <div>
-    Hello, World!
-    <Field />
-    <img src={img} alt="" />
-  </div>
-)
+  return <RouterProvider router={router} />
+}
 
 export default App

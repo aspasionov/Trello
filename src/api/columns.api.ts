@@ -1,24 +1,24 @@
 import instance from '@api/base.api'
-import type { ColumnT } from '@store/columns/types'
+import type { ColumnT } from '@store/desk/types'
 
 export const fetchAll = async (): Promise<any> => {
   return await instance({
-    url: '/columns',
+    url: '/api/column',
     method: 'GET'
   })
 }
 
 export const deleteOne = async (id: string): Promise<any> => {
   return await instance({
-    url: `/columns/${id}`,
+    url: `/api/column/${id}`,
     method: 'DELETE'
   })
 }
 
 export const addOne = async (column: ColumnT): Promise<any> => {
   return await instance({
-    url: '/columns',
-    method: 'POST',
+    url: '/api/column',
+    method: 'post',
     data: column
   })
 }
@@ -28,7 +28,7 @@ export const updateOne = async (
   column: ColumnT
 ): Promise<{ data: ColumnT }> => {
   return await instance({
-    url: `/columns/${id}`,
+    url: `/api/column/${id}`,
     method: 'PUT',
     data: column
   })

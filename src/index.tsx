@@ -1,25 +1,15 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { ChakraProvider } from '@chakra-ui/react'
-
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { store } from '@store/store'
-import { Provider } from 'react-redux'
-
-import Home from './screens/Home'
 import './styles.css'
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />
-  }
-])
+import App from './App'
+import { store } from '@store/store'
+import { ChakraProvider } from '@chakra-ui/react'
+import { Provider } from 'react-redux'
 
 const appRouting = (
   <Provider store={store}>
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <App />
     </ChakraProvider>
   </Provider>
 )
