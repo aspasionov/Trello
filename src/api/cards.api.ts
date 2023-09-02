@@ -1,6 +1,6 @@
 import instance from '@api/base.api'
 
-import type { CardT } from '@store/columns/types'
+import type { CardT } from '@store/desk/types'
 
 export const fetchAll = async (): Promise<{ data: CardT[] }> => {
   return await instance<CardT[]>({
@@ -11,14 +11,14 @@ export const fetchAll = async (): Promise<{ data: CardT[] }> => {
 
 export const deleteOne = async (id: string): Promise<{ data: CardT }> => {
   return await instance({
-    url: `/cards/${id}`,
+    url: `/api/task/${id}`,
     method: 'DELETE'
   })
 }
 
 export const addOne = async (card: CardT): Promise<{ data: CardT }> => {
   return await instance({
-    url: '/cards',
+    url: '/api/task',
     method: 'POST',
     data: card
   })
@@ -29,8 +29,8 @@ export const updateOne = async (
   card: CardT
 ): Promise<{ data: CardT }> => {
   return await instance({
-    url: `/cards/${id}`,
-    method: 'PUT',
+    url: `/api/task/${id}`,
+    method: 'PATCH',
     data: card
   })
 }

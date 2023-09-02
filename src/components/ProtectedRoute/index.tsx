@@ -1,14 +1,16 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-
+import { selectUser } from '@store/user/selectors'
+import { useSelector } from 'react-redux'
 
 interface RouterProps {
-  isAuth: boolean
   children: React.ReactElement
 }
 
-const ProtectedRoute: React.FC<RouterProps> = ({ isAuth, children }) => {
-  if (!isAuth) {
+const ProtectedRoute: React.FC<RouterProps> = ({ children }) => {
+  const user = useSelector(selectUser)
+
+  if (user._id === undefined) {
     return <Navigate to="login" replace />
   }
 
@@ -16,4 +18,3 @@ const ProtectedRoute: React.FC<RouterProps> = ({ isAuth, children }) => {
 }
 
 export default ProtectedRoute
-

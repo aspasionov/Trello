@@ -8,7 +8,7 @@ import type {
 } from 'axios'
 
 const initialConfig: AxiosRequestConfig = {
-  baseURL: 'http://localhost:3333/',
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     timeout: 1000
@@ -30,7 +30,6 @@ const onRequestError = async (error: AxiosError): Promise<AxiosError> => {
 }
 
 const onResponseError = async (error: AxiosError): Promise<unknown> => {
-  // console.log('error', error.response)
   throw error
 }
 

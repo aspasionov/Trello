@@ -1,4 +1,4 @@
-import type { ColumnT } from '../columns/types'
+import type { ColumnT } from '../desk/types'
 
 export interface ErrorsT {
   errors: Array<{

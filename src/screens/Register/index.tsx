@@ -12,6 +12,7 @@ import {
   Button,
   FormErrorMessage
 } from '@chakra-ui/react'
+import instance from '@api/base.api'
 import { useAppDispatch } from '@store/store'
 import { register } from '@store/user/asyncActions'
 
@@ -84,6 +85,7 @@ const RegisterScreen: React.FC = () => {
       const user = await appDispatch(register(restState as UserT)).unwrap()
       if (typeof user === 'object') {
         if (user?.token !== undefined) {
+          instance.defaults.headers.common.Authorization = `Bearer ${user.token}`
           localStorage.setItem('TrelloToken', user.token)
           navigate('/')
         }

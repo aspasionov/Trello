@@ -16,20 +16,18 @@ import {
   Menu,
   Textarea
 } from '@chakra-ui/react'
-import { updateColumn, fetchColumns } from '@store/columns/asyncActions'
+import { updateCard, deleteCard, fetchColumns } from '@store/desk/asyncActions'
 import { useAppDispatch } from '@store/store'
 import type { CardProps } from 'react-trello-ts/dist/components/Card'
-import type { CardT } from '@store/cards/types'
-import { useSelector } from 'react-redux'
-import { selectColumns } from '@store/columns/selectors'
-import type { ColumnT } from '@store/columns/types'
+import type { CardT } from '@store/desk/types'
 import ModalWindow from '@components/ModalWindow'
 
 const Card: React.FC<CardProps & { columnId: string }> = (props) => {
-  const { id, title, label, description } = props
+  const { id, title, label, description, index } = props
   const [modalOpen, setModalOpen] = useState(false)
   const [card, setCard] = useState<Partial<CardT>>({
     id,
+    order: index,
     title: title ?? '',
     label: label ?? '',
     columnId: props.columnId,
@@ -37,25 +35,14 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
   })
 
   const dispatch = useAppDispatch()
-  const columns = useSelector(selectColumns)
 
   const handleEdit = (): void => {
     setModalOpen(true)
   }
 
   const onSubmit = async (): Promise<void> => {
-    const currentColumn = columns.find((el) => el.dbId === card.columnId)
-    const updatedCurrentColumn: Partial<ColumnT> = {
-      ...currentColumn,
-      cards:
-        currentColumn === undefined
-          ? []
-          : [
-              ...currentColumn.cards.filter((item) => item.id !== card.id),
-              card as CardT
-            ]
-    }
-    await dispatch(updateColumn(updatedCurrentColumn as ColumnT))
+    await dispatch(updateCard(card as CardT))
+    await dispatch(fetchColumns())
     setModalOpen(false)
   }
 
@@ -72,15 +59,7 @@ const Card: React.FC<CardProps & { columnId: string }> = (props) => {
   }
 
   const handleDelete = async (): Promise<void> => {
-    const updatedColumn = columns.find((el) => el.dbId === card.columnId)
-    const newColumn: Partial<ColumnT> = {
-      ...updatedColumn,
-      cards:
-        updatedColumn === undefined
-          ? []
-          : updatedColumn.cards.filter((item) => item.id !== card.id)
-    }
-    await dispatch(updateColumn(newColumn as ColumnT))
+    await dispatch(deleteCard(id))
     await dispatch(fetchColumns())
   }
 

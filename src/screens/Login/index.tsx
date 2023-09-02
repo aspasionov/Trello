@@ -12,6 +12,7 @@ import {
   Button,
   Text
 } from '@chakra-ui/react'
+import instance from '@api/base.api'
 import { useAppDispatch } from '@store/store'
 import { login } from '@store/user/asyncActions'
 import type { UserT } from '@store/user/types'
@@ -74,6 +75,7 @@ const LoginScreen: React.FC = () => {
       const user = await appDispatch(login(restState as UserT)).unwrap()
       if (typeof user === 'object') {
         if (user?.token !== undefined) {
+          instance.defaults.headers.common.Authorization = `Bearer ${user.token}`
           localStorage.setItem('TrelloToken', user.token)
           navigate('/')
         }

@@ -1,5 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit'
-import type { CardT } from '../cards/types'
+import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { UserT, UserStateT } from './types'
 import { StatusE } from './types'
@@ -18,7 +17,8 @@ export const slice = createSlice({
       state.user = action.payload
     },
     logout: (state) => {
-      state.user = null
+      state.user = { isAuth: false }
+      localStorage.removeItem('TrelloToken')
     }
   },
   extraReducers: (builder) => {
@@ -32,7 +32,8 @@ export const slice = createSlice({
         state.status = StatusE.SUCCESS
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.status = StatusE.ERROR
+        state.status = StatusE.SUCCESS
+        Object.assign(action.payload, { isAuth: true })
         state.user = action.payload as UserT
       })
       .addCase(login.rejected, (state, action) => {
@@ -45,12 +46,11 @@ export const slice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.status = StatusE.ERROR
-        console.log('xxx', action.payload)
         state.user = { isAuth: false }
       })
   }
 })
 
-export const { setUser } = slice.actions
+export const { setUser, logout } = slice.actions
 
 export default slice.reducer

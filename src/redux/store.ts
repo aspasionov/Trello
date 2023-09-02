@@ -1,11 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import column from './columns/slice'
-import cards from './cards/slice'
+import desk from './desk/slice'
 import user from './user/slice'
 
 export const store = configureStore({
-  reducer: { column, cards, user },
+  reducer: { desk, user },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false

@@ -5,21 +5,21 @@ import Board from 'react-trello-ts'
 import {
   fetchColumns,
   deleteColumn,
-  updateColumn,
-  addColumn
-} from '@store/columns/asyncActions'
+  addColumn,
+  updateCard,
+  addCard
+} from '@store/desk/asyncActions'
 import { useAppDispatch } from '@store/store'
-import { selectColumns, selectStatus } from '@store/columns/selectors'
-import { StatusE } from '@store/columns/types'
+import { selectColumns, selectStatus } from '@store/desk/selectors'
+import { StatusE } from '@store/desk/types'
 import LaneHeader from './LaneHeader'
 import Card from './Card'
 
 import Preloader from '@components/Preloader'
-import type { ColumnT } from '@store/columns/types'
-import type { CardT } from '@store/cards/types'
+import type { ColumnT, CardT } from '@store/desk/types'
 import type { FormState as NewCardFormState } from 'react-trello-ts/dist/components/NewCardForm'
 import type { Card as ICard } from 'react-trello-ts/dist/types/Board'
-import { setColumns } from '@store/columns/slice'
+import Header from '@components/Header'
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -37,12 +37,6 @@ const Home: React.FC = () => {
     })()
   }, [])
 
-  const cardsWidthPosition = (items: CardT[], position: number = 0): CardT[] =>
-    items.map((el, idx) => ({
-      ...el,
-      order: position >= el.order && position !== 0 ? (position += 1) : idx
-    }))
-
   const handleDragEnd = async (
     cardId: string,
     sourceLaneId: string,
@@ -50,37 +44,17 @@ const Home: React.FC = () => {
     position: number,
     cardDetails: ICard
   ): Promise<void> => {
-    const newColumn = columns.find((el) => el.id === targetLaneId)
-    const oldLine = columns.find((el) => el.id === sourceLaneId)
+    const currentCol = columns.find((el) => el.id === targetLaneId)
+    const prevCol = columns.find((el) => el.id === sourceLaneId)
+
     const newCard: Partial<CardT> = {
       ...cardDetails,
+      prevColumnId: prevCol !== undefined ? prevCol.dbId : null,
       order: position,
-      columnId: newColumn?.dbId
+      columnId: currentCol !== undefined ? currentCol.dbId : null
     }
 
-    const updatedOldColumn: Partial<ColumnT> = {
-      ...oldLine,
-      cards:
-        oldLine === undefined
-          ? []
-          : cardsWidthPosition(
-              oldLine.cards.filter((card) => card.id !== cardId)
-            )
-    }
-
-    const updatedNewColumn: Partial<ColumnT> = {
-      ...newColumn,
-      cards:
-        newColumn === undefined
-          ? []
-          : cardsWidthPosition(
-              [...newColumn.cards, newCard] as CardT[],
-              position
-            )
-    }
-
-    await dispatch(updateColumn(updatedNewColumn as ColumnT))
-    await dispatch(updateColumn(updatedOldColumn as ColumnT))
+    await dispatch(updateCard(newCard as CardT))
 
     await dispatch(fetchColumns())
   }
@@ -91,7 +65,6 @@ const Home: React.FC = () => {
       title: params.title,
       label: params.label
     }
-
     await dispatch(addColumn(newColumn as ColumnT))
     await dispatch(fetchColumns())
   }
@@ -101,18 +74,9 @@ const Home: React.FC = () => {
     const newCard: Partial<CardT & { draggable: boolean }> = {
       ...card,
       order: currentCol !== undefined ? currentCol.cards.length : 0,
-      draggable: true,
       columnId: currentCol !== undefined ? currentCol.dbId : ''
     }
-
-    const updatedNewColumn: Partial<ColumnT> = {
-      ...currentCol,
-      cards:
-        currentCol === undefined
-          ? []
-          : ([...currentCol.cards, newCard] as CardT[])
-    }
-    await dispatch(updateColumn(updatedNewColumn as ColumnT))
+    await dispatch(addCard(newCard as CardT))
     await dispatch(fetchColumns())
   }
 
@@ -123,14 +87,13 @@ const Home: React.FC = () => {
 
   return (
     <div>
+      <Header />
       <Board
         components={components}
         canAddLanes
         onLaneDelete={(id) => {
           void (async () => {
             const currentCol = columns.find((el) => el.id === id)
-            const filteredColumns = columns.filter((el) => el.id !== id)
-            dispatch(setColumns(filteredColumns))
             if (currentCol !== undefined) {
               await dispatch(deleteColumn(currentCol.dbId))
             }
@@ -168,7 +131,6 @@ const Home: React.FC = () => {
         }}
         editable
         cardDraggable
-        laneSortFunction={(a, b) => a.order - b.order}
         data={{ lanes: columns }}
       />
 

@@ -1,4 +1,12 @@
-import type { CardT } from '../cards/types'
+export interface CardT {
+  id: string
+  description: string
+  label: string
+  columnId: string | null
+  prevColumnId?: string | null
+  title: string
+  order: number
+}
 
 export interface ColumnT {
   id: string
