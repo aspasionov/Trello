@@ -89,6 +89,7 @@ const Home: React.FC = () => {
     <div>
       <Header />
       <Board
+        style={{ height: 'calc(100vh - 81px)' }}
         components={components}
         canAddLanes
         onLaneDelete={(id) => {
