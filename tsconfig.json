@@ -17,6 +17,7 @@
             "@components/*": ["src/components/*"],
             "@store/*": ["src/redux/*"],
             "@static/*": ["src/static/*"],
+            "@utils/*": ["src/utils/*"],
             "@api/*": ["src/api/*"]
         }
     }
