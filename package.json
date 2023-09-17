@@ -30,9 +30,8 @@
         "react-dom": "^18.2.0",
         "react-redux": "^8.0.5",
         "react-router-dom": "^6.9.0",
-        "react-trello-ts": "^2.0.14",
-        "reset-css": "^5.0.1",
-        "uniqid": "^5.4.0"
+        "react-trello": "^2.2.11",
+        "reset-css": "^5.0.1"
     },
     "devDependencies": {
         "@types/uniqid": "^5.3.2",
