@@ -49,6 +49,7 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
   }
 
   const onSubmit = async (): Promise<void> => {
+    console.log('card', card)
     await dispatch(updateCard(card as CardT))
     await dispatch(fetchColumns())
     setModalOpen(false)

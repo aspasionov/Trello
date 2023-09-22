@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import Board from 'react-trello-ts'
+import Board from 'react-trello'
 
 import {
   fetchColumns,
@@ -17,7 +17,6 @@ import Card from './Card'
 
 import Preloader from '@components/Preloader'
 import type { ColumnT, CardT } from '@store/desk/types'
-import type { FormState as NewCardFormState } from 'react-trello-ts/dist/components/NewCardForm'
 import type { Card as ICard } from 'react-trello-ts/dist/types/Board'
 import Header from '@components/Header'
 
@@ -44,26 +43,23 @@ const Home: React.FC = () => {
     position: number,
     cardDetails: ICard
   ): Promise<void> => {
-    const currentCol = columns.find((el) => el.id === targetLaneId)
-    const prevCol = columns.find((el) => el.id === sourceLaneId)
-
     const newCard: Partial<CardT> = {
       ...cardDetails,
-      prevColumnId: prevCol !== undefined ? prevCol.dbId : null,
+      prevColumnId: sourceLaneId,
       order: position,
-      columnId: currentCol !== undefined ? currentCol.dbId : null
+      columnId: targetLaneId
     }
 
     await dispatch(updateCard(newCard as CardT))
 
     await dispatch(fetchColumns())
   }
-  const handleLineAdd = async (params: NewCardFormState): Promise<void> => {
+  const handleLineAdd = async (params: {
+    id: string
+    title: string
+  }): Promise<void> => {
     const newColumn: Partial<ColumnT> = {
-      order: columns.length,
-      id: params.laneId,
-      title: params.title,
-      label: params.label
+      title: params.title
     }
     await dispatch(addColumn(newColumn as ColumnT))
     await dispatch(fetchColumns())
@@ -74,7 +70,7 @@ const Home: React.FC = () => {
     const newCard: Partial<CardT & { draggable: boolean }> = {
       ...card,
       order: currentCol !== undefined ? currentCol.cards.length : 0,
-      columnId: currentCol !== undefined ? currentCol.dbId : ''
+      columnId: laneId
     }
     await dispatch(addCard(newCard as CardT))
     await dispatch(fetchColumns())
@@ -85,40 +81,44 @@ const Home: React.FC = () => {
     Card
   }
 
+  const copyArr = JSON.parse(JSON.stringify(columns))
+
   return (
     <div>
       <Header />
       <Board
         style={{ height: 'calc(100vh - 81px)' }}
+        data={{ lanes: copyArr }}
         components={components}
-        canAddLanes
-        onLaneDelete={(id) => {
+        onLaneDelete={(id: string) => {
           void (async () => {
-            const currentCol = columns.find((el) => el.id === id)
-            if (currentCol !== undefined) {
-              await dispatch(deleteColumn(currentCol.dbId))
-            }
+            await dispatch(deleteColumn(id))
             await dispatch(fetchColumns())
           })()
         }}
-        onLaneAdd={(params) => {
+        onLaneAdd={(params: { id: string; title: string }) => {
           void (async () => {
             await handleLineAdd(params)
           })()
         }}
-        onCardAdd={(card, laneId) => {
+        onCardAdd={(card: CardT, laneId: string) => {
           void (async () => {
             await handleCardAdd(card, laneId)
           })()
         }}
         handleDragEnd={(
-          cardId,
-          sourceLaneId,
-          targetLaneId,
-          position,
-          cardDetails
+          cardId: string,
+          sourceLaneId: string,
+          targetLaneId: string,
+          position: number,
+          cardDetails: CardT
         ) => {
-          if (targetLaneId !== sourceLaneId) {
+          if (targetLaneId === sourceLaneId && position === cardDetails.order)
+            return
+          if (
+            targetLaneId !== sourceLaneId ||
+            (targetLaneId === sourceLaneId && position !== cardDetails.order)
+          ) {
             void (async () => {
               await handleDragEnd(
                 cardId,
@@ -130,9 +130,9 @@ const Home: React.FC = () => {
             })()
           }
         }}
-        editable
+        canAddLanes
         cardDraggable
-        data={{ lanes: columns }}
+        editable
       />
 
       {status === StatusE.LOADING && <Preloader />}

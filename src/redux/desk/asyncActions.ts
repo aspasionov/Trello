@@ -5,7 +5,6 @@ import {
   deleteOne as deleteOneCard,
   updateOne as updateOneCard
 } from '@api/cards.api'
-import uniqid from 'uniqid'
 
 import type { ColumnT, CardT } from './types'
 
@@ -13,12 +12,7 @@ export const fetchColumns = createAsyncThunk(
   'column/fetchColumns',
   async () => {
     const response = await fetchAll()
-    const dataWithId = response.data.map((el: ColumnT) => ({
-      ...el,
-      id: uniqid(),
-      dbId: el.id
-    }))
-    return dataWithId
+    return response.data
   }
 )
 
