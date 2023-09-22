@@ -70,7 +70,7 @@ const Home: React.FC = () => {
     const newCard: Partial<CardT & { draggable: boolean }> = {
       ...card,
       order: currentCol !== undefined ? currentCol.cards.length : 0,
-      columnId: currentCol !== undefined ? laneId : ''
+      columnId: laneId
     }
     await dispatch(addCard(newCard as CardT))
     await dispatch(fetchColumns())
