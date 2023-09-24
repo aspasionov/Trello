@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { UserT, UserStateT } from './types'
 import { StatusE } from './types'
-import { getCurrentUser, login, register } from './asyncActions'
+import { getCurrentUser, login, register, update } from './asyncActions'
 
 const initialState: UserStateT = {
   user: null,
@@ -41,12 +41,16 @@ export const slice = createSlice({
         state.user = { isAuth: false }
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.status = StatusE.ERROR
+        state.status = StatusE.SUCCESS
         state.user = action.payload as UserT
       })
       .addCase(register.rejected, (state, action) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
+      })
+      .addCase(update.fulfilled, (state, action) => {
+        state.status = StatusE.SUCCESS
+        state.user = action.payload as UserT
       })
   }
 })

@@ -18,7 +18,6 @@ import Card from './Card'
 import Preloader from '@components/Preloader'
 import type { ColumnT, CardT } from '@store/desk/types'
 import type { Card as ICard } from 'react-trello-ts/dist/types/Board'
-import Header from '@components/Header'
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -85,7 +84,6 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <Header />
       <Board
         style={{ height: 'calc(100vh - 81px)' }}
         data={{ lanes: copyArr }}

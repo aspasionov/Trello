@@ -14,7 +14,7 @@ export interface UserT {
   columns?: ColumnT[]
   password?: string
   isAuth?: boolean
-  avatarUrl?: string
+  avatar?: string
   token?: string
   __v?: number
   _id?: string

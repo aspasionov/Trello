@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
 import Home from './screens/Home'
+import EditProfile from './screens/EditProfile'
 import ProtectedRoute from '@components/ProtectedRoute'
 import AuthLayout from '@components/AuthLayout'
 
@@ -16,6 +17,14 @@ const App: React.FC = () => {
           element: (
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          )
+        },
+        {
+          path: '/edit-profile',
+          element: (
+            <ProtectedRoute>
+              <EditProfile />
             </ProtectedRoute>
           )
         },
