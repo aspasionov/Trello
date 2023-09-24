@@ -18,7 +18,9 @@
             "@store/*": ["src/redux/*"],
             "@static/*": ["src/static/*"],
             "@utils/*": ["src/utils/*"],
-            "@api/*": ["src/api/*"]
+            "@api/*": ["src/api/*"],
+            "@hooks/*": ["src/hooks/*"],
+            "@constans/*": ["src/constans/*"]
         }
     }
 }

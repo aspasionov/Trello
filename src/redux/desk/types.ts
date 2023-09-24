@@ -5,7 +5,7 @@ export interface CardT {
   columnId: string | null
   prevColumnId?: string | null
   title: string
-  background: string
+  background: Blob | string | null
   order: number
 }
 

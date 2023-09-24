@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { ChevronDownIcon, HamburgerIcon, DownloadIcon } from '@chakra-ui/icons'
-import { addBackground, getOneCard } from '@api/cards.api'
+import React, { useState, useEffect } from 'react'
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { addBackground } from '@api/cards.api'
 import { renderImgPath } from '@utils/imgPath'
+import { useImageUploader } from '@hooks/useImageUploader'
 
 import {
   Box,
@@ -17,7 +18,6 @@ import {
   MenuList,
   MenuItem,
   Menu,
-  Avatar,
   Textarea
 } from '@chakra-ui/react'
 
@@ -32,7 +32,7 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
 ) => {
   const { id, title, label, description, index, background } = props
   const [modalOpen, setModalOpen] = useState(false)
-  const [card, setCard] = useState<Partial<CardT>>({
+  const [card, setCard] = useState<CardT>({
     id,
     order: index,
     title: title ?? '',
@@ -42,6 +42,22 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
     background: background ?? null
   })
 
+  const setFile = (file: Blob | null | string): void => {
+    setCard((prev) => {
+      return {
+        ...prev,
+        background: file
+      }
+    })
+  }
+
+  const { renderField } = useImageUploader(
+    card.background !== null && card.background !== ''
+      ? renderImgPath(card.background as string)
+      : '',
+    setFile
+  )
+
   const dispatch = useAppDispatch()
 
   const handleEdit = (): void => {
@@ -49,9 +65,23 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
   }
 
   const onSubmit = async (): Promise<void> => {
-    console.log('card', card)
-    await dispatch(updateCard(card as CardT))
-    await dispatch(fetchColumns())
+    try {
+      if (
+        card.background !== null &&
+        card.background !== '' &&
+        typeof card.background !== 'string'
+      ) {
+        const formData = new FormData()
+
+        formData.append('background', card.background)
+        await addBackground(card.id, formData)
+      }
+      await dispatch(updateCard(card))
+      await dispatch(fetchColumns())
+    } catch (e) {
+      console.log(e)
+    }
+
     setModalOpen(false)
   }
 
@@ -67,39 +97,36 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
     })
   }
 
-  const handleUploadFile = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
-    const formData = new FormData()
-
-    if (event.currentTarget.files == null) return
-
-    formData.append('background', event.currentTarget.files[0])
-
-    await addBackground(card.id as string, formData)
-    try {
-      const cardData = await getOneCard(card.id as string)
-      setCard(cardData)
-    } catch (e) {
-      console.log(e)
+  useEffect(() => {
+    if (!modalOpen) {
+      setCard((prev) => {
+        return {
+          ...prev,
+          background
+        }
+      })
     }
-  }
+  }, [modalOpen])
 
   const handleDelete = async (): Promise<void> => {
     await dispatch(deleteCard(id))
     await dispatch(fetchColumns())
   }
   const bgImg: string = renderImgPath(card.background as string)
+
+  const isBgExist =
+    card.background !== null &&
+    typeof card.background === 'string' &&
+    card.background !== ''
   const cardStyles = {
     p: 2,
     mb: 1,
     maxWidth: 250,
     rounded: 'md',
-    bg:
-      card.background !== null
-        ? `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${bgImg}) center/cover no-repeat`
-        : 'white',
-    ...(card.background !== null && {
+    bg: isBgExist
+      ? `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${bgImg}) center/cover no-repeat`
+      : 'white',
+    ...(isBgExist && {
       '&  .chakra-heading': {
         color: 'white'
       }
@@ -199,40 +226,7 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
             <FormLabel>Label</FormLabel>
             <Input value={card.label} name="label" onChange={handleChange} />
           </FormControl>
-          <FormControl variant="floating">
-            <Stack direction="row" spacing={4} alignItems="center">
-              <label htmlFor="inputFile">
-                <input
-                  id="inputFile"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={(e) => {
-                    void (async () => {
-                      await handleUploadFile(e)
-                    })()
-                  }}
-                />
-                <Box
-                  cursor="pointer"
-                  p={2}
-                  bg="#3179ba"
-                  w={50}
-                  h={50}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="50%"
-                >
-                  <DownloadIcon color="white" />
-                </Box>
-              </label>
-              <Avatar
-                size="2xl"
-                src={renderImgPath(card.background as string)}
-              />
-            </Stack>
-            <FormLabel>Background</FormLabel>
-          </FormControl>
+          {renderField()}
           <FormControl variant="floating" id="first-name">
             <FormLabel>Description</FormLabel>
             <Textarea
