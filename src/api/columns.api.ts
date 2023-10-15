@@ -29,7 +29,7 @@ export const updateOne = async (
 ): Promise<{ data: ColumnT }> => {
   return await instance({
     url: `/api/column/${id}`,
-    method: 'PUT',
+    method: 'patch',
     data: column
   })
 }

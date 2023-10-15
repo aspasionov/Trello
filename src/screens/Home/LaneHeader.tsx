@@ -1,16 +1,27 @@
 import React, { useState } from 'react'
-import { DeleteIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { fetchColumns, updateColumn } from '@store/desk/asyncActions'
+import type { ColumnT } from '@store/desk/types'
+import { useAppDispatch } from '@store/store'
 import {
   Box,
   Flex,
+  Text,
   Button,
+  Heading,
   Modal,
   ModalOverlay,
   ModalHeader,
   ModalContent,
   ModalCloseButton,
-  ModalFooter
+  ModalFooter,
+  Stack,
+  FormErrorMessage,
+  FormControl,
+  FormLabel,
+  Input
 } from '@chakra-ui/react'
+import ModalWindow from '@components/ModalWindow'
 
 interface Props {
   title: string
@@ -19,8 +30,17 @@ interface Props {
   onDelete: () => void
 }
 
-const LaneHeader: React.FC<Props> = ({ title, label, onDelete }) => {
+const LaneHeader: React.FC<Props> = ({ title, label, onDelete, id }) => {
   const [open, setOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [column, setColumn] = useState<Partial<ColumnT>>({
+    title,
+    id,
+    label
+  })
+  const dispatch = useAppDispatch()
+
+  console.log('column', column)
 
   const handleOpenModal = (): void => {
     setOpen(true)
@@ -30,12 +50,50 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete }) => {
     setOpen(false)
   }
 
+  const handleEdit = (): void => {
+    setModalOpen(true)
+  }
+
+  const handleChange = ({
+    target: { name, value }
+  }: React.ChangeEvent<HTMLInputElement>): void => {
+    setColumn((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const onSubmit = async (): Promise<void> => {
+    if (column.title !== '' && column.label !== '') {
+      await dispatch(updateColumn(column as ColumnT))
+      await dispatch(fetchColumns())
+      setModalOpen(false)
+    }
+  }
+
   return (
     <>
       <Flex align="center" justify="space-between">
-        <Box>{title}</Box>
-        <Box>{label}</Box>
-        <Button onClick={handleOpenModal} colorScheme="red" size="xs">
+        <Box>
+          <Heading as="h5" size="sm">
+            {title}
+          </Heading>
+          <Text fontSize="xs">{label}</Text>
+        </Box>
+        <Button
+          sx={{ ml: 'auto' }}
+          onClick={handleEdit}
+          colorScheme="blue"
+          size="xs"
+        >
+          <EditIcon />
+        </Button>
+        <Button
+          sx={{ ml: 1 }}
+          onClick={handleOpenModal}
+          colorScheme="red"
+          size="xs"
+        >
           <DeleteIcon />
         </Button>
       </Flex>
@@ -58,6 +116,34 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <ModalWindow
+        isOpen={modalOpen}
+        onClose={() => {
+          setModalOpen(false)
+        }}
+        onApply={() => {
+          void (async () => {
+            await onSubmit()
+          })()
+        }}
+      >
+        <Stack spacing={3} sx={{ pt: 10 }}>
+          <FormControl variant="floating" isInvalid={column.title === ''}>
+            <FormLabel>Title</FormLabel>
+            <Input value={column.title} name="title" onChange={handleChange} />
+            {column.title === '' && (
+              <FormErrorMessage>Field is required</FormErrorMessage>
+            )}
+          </FormControl>
+          <FormControl variant="floating" isInvalid={column.label === ''}>
+            <FormLabel>Label</FormLabel>
+            <Input value={column.label} name="label" onChange={handleChange} />
+            {column.label === '' && (
+              <FormErrorMessage>Field is required</FormErrorMessage>
+            )}
+          </FormControl>
+        </Stack>
+      </ModalWindow>
     </>
   )
 }

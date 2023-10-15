@@ -7,6 +7,7 @@ import {
   deleteColumn,
   addColumn,
   updateCard,
+  updateColumn,
   addCard
 } from '@store/desk/asyncActions'
 import { useAppDispatch } from '@store/store'
@@ -58,7 +59,8 @@ const Home: React.FC = () => {
     title: string
   }): Promise<void> => {
     const newColumn: Partial<ColumnT> = {
-      title: params.title
+      title: params.title,
+      order: columns.length
     }
     await dispatch(addColumn(newColumn as ColumnT))
     await dispatch(fetchColumns())
@@ -128,8 +130,19 @@ const Home: React.FC = () => {
             })()
           }
         }}
+        handleLaneDragEnd={(_, order, col) => {
+          void (async () => {
+            const updatedColumn = {
+              ...col,
+              order
+            }
+            await dispatch(updateColumn(updatedColumn))
+            await dispatch(fetchColumns())
+          })()
+        }}
         canAddLanes
         cardDraggable
+        draggable
         editable
       />
 
