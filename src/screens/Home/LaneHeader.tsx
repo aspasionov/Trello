@@ -40,8 +40,6 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete, id }) => {
   })
   const dispatch = useAppDispatch()
 
-  console.log('column', column)
-
   const handleOpenModal = (): void => {
     setOpen(true)
   }
