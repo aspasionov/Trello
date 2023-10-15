@@ -35,7 +35,7 @@ export const addColumn = createAsyncThunk(
 export const updateColumn = createAsyncThunk(
   'desk/updateColumn',
   async (column: ColumnT) => {
-    const response = await updateOne(column.dbId, column)
+    const response = await updateOne(column.id, column)
     return response.data
   }
 )
