@@ -25,11 +25,11 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response.data
 }
 
-const onRequestError = async (error: AxiosError): Promise<AxiosError> => {
+const onRequestError = (error: AxiosError): AxiosError => {
   throw error
 }
 
-const onResponseError = async (error: AxiosError): Promise<unknown> => {
+const onResponseError = (error: AxiosError): AxiosError => {
   throw error
 }
 

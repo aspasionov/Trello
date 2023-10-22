@@ -1,21 +1,21 @@
 import instance from '@api/base.api'
 import type { ColumnT } from '@store/desk/types'
 
-export const fetchAll = async (): Promise<any> => {
+export const fetchAll = async (): Promise<never> => {
   return await instance({
     url: '/api/column',
     method: 'GET'
   })
 }
 
-export const deleteOne = async (id: string): Promise<any> => {
+export const deleteOne = async (id: string): Promise<never> => {
   return await instance({
     url: `/api/column/${id}`,
     method: 'DELETE'
   })
 }
 
-export const addOne = async (column: ColumnT): Promise<any> => {
+export const addOne = async (column: ColumnT): Promise<never> => {
   return await instance({
     url: '/api/column',
     method: 'post',

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { addBackground } from '@api/cards.api'
 import { renderImgPath } from '@utils/imgPath'
-import { useImageUploader } from '@hooks/useImageUploader'
+// import { useImageUploader } from '@hooks/useImageUploader'
 
 import {
   Box,
@@ -42,21 +42,21 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
     background: background ?? null
   })
 
-  const setFile = (file: Blob | null | string): void => {
-    setCard((prev) => {
-      return {
-        ...prev,
-        background: file
-      }
-    })
-  }
+  // const setFile = (file: Blob | null | string): void => {
+  //   setCard((prev) => {
+  //     return {
+  //       ...prev,
+  //       background: file
+  //     }
+  //   })
+  // }
 
-  const { renderField } = useImageUploader(
-    card.background !== null && card.background !== ''
-      ? renderImgPath(card.background as string)
-      : '',
-    setFile
-  )
+  // const { renderField } = useImageUploader(
+  //   card.background !== null && card.background !== ''
+  //     ? renderImgPath(card.background as string)
+  //     : '',
+  //   setFile
+  // )
 
   const dispatch = useAppDispatch()
 
@@ -226,7 +226,7 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
             <FormLabel>Label</FormLabel>
             <Input value={card.label} name="label" onChange={handleChange} />
           </FormControl>
-          {renderField()}
+          {/* {renderField()} */}
           <FormControl variant="floating" id="first-name">
             <FormLabel>Description</FormLabel>
             <Textarea

@@ -77,8 +77,8 @@ const Home: React.FC = () => {
     await dispatch(fetchColumns())
   }
 
-  const components: Record<string, any> = {
-    LaneHeader,
+  const components: Record<string, React.FC> = {
+    LaneHeader: LaneHeader as React.FC,
     Card
   }
 

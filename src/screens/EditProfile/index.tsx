@@ -10,11 +10,11 @@ import {
   Input,
   Stack
 } from '@chakra-ui/react'
-import { useImageUploader } from '@hooks/useImageUploader'
+// import { useImageUploader } from '@hooks/useImageUploader'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '@store/store'
-import { uploadAvatar } from '@api/user.api'
-import { renderImgPath } from '@utils/imgPath'
+// import { uploadAvatar } from '@api/user.api'
+// import { renderImgPath } from '@utils/imgPath'
 import { update, getCurrentUser } from '@store/user/asyncActions'
 import { type UserT } from '@store/user/types'
 import { selectUser } from '@store/user/selectors'
@@ -28,12 +28,12 @@ interface StateT {
   email: string
   name: string
   avatar: AvatarT
-  errors: Record<string, any>
+  errors: Record<string, string>
 }
 
 interface ActionT {
   type: string
-  value: string | Record<string, any> | AvatarT
+  value: string | Record<string, string> | AvatarT
 }
 
 const reducer = (state: StateT, action: ActionT): StateT => {
@@ -59,7 +59,7 @@ const reducer = (state: StateT, action: ActionT): StateT => {
     case 'set-errors': {
       return {
         ...state,
-        errors: action.value as Record<string, any>
+        errors: action.value as Record<string, never>
       }
     }
   }
@@ -76,41 +76,44 @@ const EditProfile: React.FC = () => {
     errors: {}
   })
 
-  const setFile = (file: Blob | null): void => {
-    dispatch({ type: 'set-avatar', value: file })
-  }
+  // const setFile = (file: Blob | null): void => {
+  //   dispatch({ type: 'set-avatar', value: file })
+  // }
 
-  const { renderField, selectedFile } = useImageUploader(
-    user.avatar !== null && user.avatar !== ''
-      ? renderImgPath(user.avatar as string)
-      : '',
-    setFile
-  )
+  // const { renderField, selectedFile } = useImageUploader(
+  //   user.avatar !== null && user.avatar !== ''
+  //     ? renderImgPath(user.avatar as string)
+  //     : '',
+  //   setFile
+  // )
 
   const appDispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleSubmit = async (): Promise<void> => {
-    const formData = new FormData()
+    // const formData = new FormData()
     const updatedUser = {
       ...user,
       ...state
     }
-    const promises: Array<Promise<any>> = [
+    const promises: Array<Promise<never>> = [
       appDispatch(update(updatedUser as UserT)).unwrap()
     ]
 
-    if (selectedFile !== null) {
-      formData.append('avatar', selectedFile)
-      promises.push(uploadAvatar(user._id as string, formData))
-    }
+    // if (selectedFile !== null) {
+    //   formData.append('avatar', selectedFile)
+    //   promises.push(uploadAvatar(user._id as string, formData))
+    // }
 
     try {
       await Promise.all(promises)
       await appDispatch(getCurrentUser())
       navigate('/')
     } catch (err) {
-      const objErrors = Object.assign({}, ...(err as any[]))
+      const objErrors = Object.assign(
+        {},
+        ...(err as Array<Record<string, string>>)
+      )
       dispatch({ type: 'set-errors', value: objErrors })
     }
   }
@@ -128,8 +131,8 @@ const EditProfile: React.FC = () => {
           <Heading as="h3" size="lg">
             Profile
           </Heading>
-          {renderField()}
-          <FormControl isInvalid={Boolean(state.errors?.name)}>
+          {/* {renderField()} */}
+          <FormControl isInvalid={Boolean(state.errors.name)}>
             <FormLabel>Name</FormLabel>
             <Input
               placeholder="Name"
@@ -139,9 +142,9 @@ const EditProfile: React.FC = () => {
                 dispatch({ type: 'set-name', value: e.target.value })
               }}
             />
-            <FormErrorMessage>{state.errors?.name}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.name}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={Boolean(state.errors?.email)}>
+          <FormControl isInvalid={Boolean(state.errors.email)}>
             <FormLabel>Email</FormLabel>
             <Input
               placeholder="Email"
@@ -151,7 +154,7 @@ const EditProfile: React.FC = () => {
                 dispatch({ type: 'set-email', value: e.target.value })
               }}
             />
-            <FormErrorMessage>{state.errors?.email}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.email}</FormErrorMessage>
           </FormControl>
           <Flex justifyContent="space-between">
             <Button

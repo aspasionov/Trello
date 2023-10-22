@@ -11,7 +11,7 @@ export const getUser = async (): Promise<UserT | unknown> => {
     return res
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      if (err?.response !== undefined) {
+      if (err.response !== undefined) {
         return await Promise.reject(err.response.data)
       }
     } else {
@@ -30,7 +30,7 @@ export const loginUser = async (data: UserT): Promise<UserT | unknown> => {
     return res
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      if (err?.response !== undefined) {
+      if (err.response !== undefined) {
         return await Promise.reject(err.response.data)
       }
     } else {
@@ -49,7 +49,7 @@ export const registerUser = async (data: UserT): Promise<UserT | unknown> => {
     return res
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      if (err?.response !== undefined) {
+      if (err.response !== undefined) {
         return await Promise.reject(err.response.data)
       }
     } else {
@@ -71,7 +71,7 @@ export const updateUser = async (
     return res
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      if (err?.response !== undefined) {
+      if (err.response !== undefined) {
         return await Promise.reject(err.response.data)
       }
     } else {
@@ -82,7 +82,7 @@ export const updateUser = async (
 
 export const uploadAvatar = async (
   id: string,
-  formData: any
+  formData: Blob
 ): Promise<{ path: string }> => {
   console.log('formData', formData)
   return await instance({

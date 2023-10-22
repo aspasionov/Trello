@@ -22,12 +22,12 @@ interface StateT {
   email: string
   password: string
   name: string
-  errors: Record<string, any>
+  errors: Record<string, string>
 }
 
 interface ActionT {
   type: string
-  value: string | Record<string, any>
+  value: string | Record<string, string>
 }
 
 const reducer = (state: StateT, action: ActionT): StateT => {
@@ -53,7 +53,7 @@ const reducer = (state: StateT, action: ActionT): StateT => {
     case 'set-errors': {
       return {
         ...state,
-        errors: action.value as Record<string, any>
+        errors: action.value as Record<string, string>
       }
     }
   }
@@ -84,14 +84,17 @@ const RegisterScreen: React.FC = () => {
     try {
       const user = await appDispatch(register(restState as UserT)).unwrap()
       if (typeof user === 'object') {
-        if (user?.token !== undefined) {
+        if (user.token !== undefined) {
           instance.defaults.headers.common.Authorization = `Bearer ${user.token}`
           localStorage.setItem('TrelloToken', user.token)
           navigate('/')
         }
       }
     } catch (err) {
-      const objErrors = Object.assign({}, ...(err as any[]))
+      const objErrors = Object.assign(
+        {},
+        ...(err as Array<Record<string, string>>)
+      )
       dispatch({ type: 'set-errors', value: objErrors })
     }
   }
@@ -109,7 +112,7 @@ const RegisterScreen: React.FC = () => {
           <Heading as="h3" size="lg">
             Register
           </Heading>
-          <FormControl isInvalid={Boolean(state.errors?.name)}>
+          <FormControl isInvalid={Boolean(state.errors.name)}>
             <FormLabel>Name</FormLabel>
             <Input
               placeholder="Name"
@@ -119,9 +122,9 @@ const RegisterScreen: React.FC = () => {
                 onChange('set-name', e.target.value)
               }}
             />
-            <FormErrorMessage>{state.errors?.name}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.name}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={Boolean(state.errors?.email)}>
+          <FormControl isInvalid={Boolean(state.errors.email)}>
             <FormLabel>Email address</FormLabel>
             <Input
               placeholder="Email"
@@ -131,9 +134,9 @@ const RegisterScreen: React.FC = () => {
                 onChange('set-email', e.target.value)
               }}
             />
-            <FormErrorMessage>{state.errors?.email}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.email}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={Boolean(state.errors?.password)}>
+          <FormControl isInvalid={Boolean(state.errors.password)}>
             <FormLabel>Password</FormLabel>
             <Input
               placeholder="Password"
@@ -143,7 +146,7 @@ const RegisterScreen: React.FC = () => {
                 onChange('set-password', e.target.value)
               }}
             />
-            <FormErrorMessage>{state.errors?.password}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.password}</FormErrorMessage>
           </FormControl>
 
           <Button

@@ -1,6 +1,7 @@
 node_modules
 dist
 coverage
+src/@types/assets.d.ts
 *.js
 *.json
 vite.config.ts

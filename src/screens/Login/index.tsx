@@ -20,12 +20,12 @@ import type { UserT } from '@store/user/types'
 interface StateT {
   email: string
   password: string
-  errors: Record<string, any>
+  errors: Record<string, string>
 }
 
 interface ActionT {
   type: string
-  value: string | Record<string, any>
+  value: string | Record<string, string>
 }
 
 const reducer = (state: StateT, action: ActionT): StateT => {
@@ -45,7 +45,7 @@ const reducer = (state: StateT, action: ActionT): StateT => {
     case 'set-errors': {
       return {
         ...state,
-        errors: action.value as Record<string, any>
+        errors: action.value as Record<string, string>
       }
     }
   }
@@ -74,14 +74,17 @@ const LoginScreen: React.FC = () => {
     try {
       const user = await appDispatch(login(restState as UserT)).unwrap()
       if (typeof user === 'object') {
-        if (user?.token !== undefined) {
+        if (user.token !== undefined) {
           instance.defaults.headers.common.Authorization = `Bearer ${user.token}`
           localStorage.setItem('TrelloToken', user.token)
           navigate('/')
         }
       }
     } catch (err) {
-      const objErrors = Object.assign({}, ...(err as any[]))
+      const objErrors = Object.assign(
+        {},
+        ...(err as Array<Record<string, string>>)
+      )
       dispatch({ type: 'set-errors', value: objErrors })
     }
   }
@@ -99,7 +102,7 @@ const LoginScreen: React.FC = () => {
           <Heading as="h3" size="lg">
             Login
           </Heading>
-          <FormControl isInvalid={Boolean(state.errors?.email)}>
+          <FormControl isInvalid={Boolean(state.errors.email)}>
             <FormLabel>Email address</FormLabel>
             <Input
               placeholder="Email"
@@ -109,9 +112,9 @@ const LoginScreen: React.FC = () => {
                 onChange('set-email', e.target.value)
               }}
             />
-            <FormErrorMessage>{state.errors?.email}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.email}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={Boolean(state.errors?.password)}>
+          <FormControl isInvalid={Boolean(state.errors.password)}>
             <FormLabel>Password</FormLabel>
             <Input
               placeholder="Password"
@@ -121,7 +124,7 @@ const LoginScreen: React.FC = () => {
                 onChange('set-password', e.target.value)
               }}
             />
-            <FormErrorMessage>{state.errors?.password}</FormErrorMessage>
+            <FormErrorMessage>{state.errors.password}</FormErrorMessage>
           </FormControl>
           <Button
             onClick={() => {
