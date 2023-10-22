@@ -29,6 +29,7 @@ const AuthLayout: React.FC = () => {
     })()
   }, [])
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (user === null) {
     return <Preloader />
   }

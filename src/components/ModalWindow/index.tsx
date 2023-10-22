@@ -12,7 +12,7 @@ import {
 
 interface Props {
   children: React.ReactNode
-  onApply: () => void
+  onApply?: () => void
   onClose: () => void
   isOpen: boolean
 }
@@ -35,7 +35,7 @@ const ModalWindow: React.FC<Props> = ({
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            {onApply !== undefined && (
+            {Boolean(onApply) && (
               <Button variant="ghost" onClick={onApply}>
                 Apply
               </Button>

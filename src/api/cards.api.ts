@@ -43,7 +43,7 @@ export const updateOne = async (
 
 export const addBackground = async (
   id: string,
-  formData: any
+  formData: never
 ): Promise<{ data: CardT }> => {
   return await instance({
     url: `/api/task/files/${id}`,
