@@ -16,6 +16,7 @@ export interface UserT {
   isAuth?: boolean
   avatar?: string
   token?: string
+  roles?: string[]
   __v?: number
   _id?: string
 }

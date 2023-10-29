@@ -11,7 +11,7 @@ interface RouterProps {
 const ProtectedRoute: React.FC<RouterProps> = ({ children }) => {
   const user = useSelector(selectUser)
 
-  if (user._id === undefined) {
+  if (user.isAuth === false) {
     return <Navigate to="login" replace />
   }
 
