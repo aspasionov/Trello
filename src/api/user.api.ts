@@ -84,7 +84,6 @@ export const uploadAvatar = async (
   id: string,
   formData: Blob
 ): Promise<{ path: string }> => {
-  console.log('formData', formData)
   return await instance({
     url: `/api/user/avatar/${id}`,
     method: 'POST',

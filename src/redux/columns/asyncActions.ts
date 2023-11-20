@@ -4,8 +4,8 @@ import type { ColumnT } from '@store/desk/types'
 
 export const fetchColumns = createAsyncThunk(
   'column/fetchColumns',
-  async () => {
-    const response = await fetchAllColumns()
+  async (params) => {
+    const response = await fetchAllColumns(params)
     return response.data as ColumnT[]
   }
 )

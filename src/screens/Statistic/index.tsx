@@ -1,11 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-const Statistic = () => {
-  return (
-    <div>
-      Statistic
-    </div>
-  );
-};
+const Statistic: React.FC = () => {
+  return <div>Statistic</div>
+}
 
-export default Statistic;
+export default Statistic

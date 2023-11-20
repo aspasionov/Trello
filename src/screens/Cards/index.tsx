@@ -1,11 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-const Cards = () => {
-  return (
-    <h1>
-      cards
-    </h1>
-  );
-};
+const Cards: React.FC = () => {
+  return <h1>cards</h1>
+}
 
-export default Cards;
+export default Cards

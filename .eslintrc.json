@@ -3,25 +3,30 @@
         "browser": true,
         "es2021": true
     },
-    "extends": ["plugin:react/recommended", "standard-with-typescript", "plugin:prettier/recommended"],
+    "extends": ["plugin:react/recommended", "standard-with-typescript", "eslint:recommended", "prettier"],
     "overrides": [],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
         "project": ["tsconfig.json"]
     },
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["react"],
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+  "parser": "@typescript-eslint/parser",
+    "plugins": ["react", "prettier"],
     "rules": {
       "multiline-ternary": "off",
       "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-floating-promises": "error",
       "no-shadow": "off",
+      "prettier/prettier": ["error"],
       "@typescript-eslint/no-shadow": "error",
       "@typescript-eslint/naming-convention": "error",
       "require-await": "off",
       "@typescript-eslint/require-await": "error",
-      "@typescript-eslint/indent": ["error", 2],
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/no-explicit-any": "error"
     }
