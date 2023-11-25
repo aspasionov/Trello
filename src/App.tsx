@@ -4,6 +4,9 @@ import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
 import Home from './screens/Home'
 import EditProfile from './screens/EditProfile'
+import Columns from './screens/Columns'
+import Cards from './screens/Cards'
+import Statistic from './screens/Statistic'
 import ProtectedRoute from '@components/ProtectedRoute'
 import AuthLayout from '@components/AuthLayout'
 
@@ -25,6 +28,30 @@ const App: React.FC = () => {
           element: (
             <ProtectedRoute>
               <EditProfile />
+            </ProtectedRoute>
+          )
+        },
+        {
+          path: '/columns',
+          element: (
+            <ProtectedRoute>
+              <Columns />
+            </ProtectedRoute>
+          )
+        },
+        {
+          path: '/statistic',
+          element: (
+            <ProtectedRoute>
+              <Statistic />
+            </ProtectedRoute>
+          )
+        },
+        {
+          path: '/cards',
+          element: (
+            <ProtectedRoute>
+              <Cards />
             </ProtectedRoute>
           )
         },

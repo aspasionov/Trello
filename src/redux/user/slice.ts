@@ -24,7 +24,7 @@ export const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCurrentUser.fulfilled, (state, action) => {
-        state.user = action.payload as UserT
+        state.user = action.payload
         state.status = StatusE.SUCCESS
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
@@ -36,7 +36,7 @@ export const slice = createSlice({
         Object.assign(action.payload, { isAuth: true })
         state.user = action.payload as UserT
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
       })
@@ -44,7 +44,7 @@ export const slice = createSlice({
         state.status = StatusE.SUCCESS
         state.user = action.payload as UserT
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(register.rejected, (state) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
       })

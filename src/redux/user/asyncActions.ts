@@ -9,7 +9,7 @@ export const getCurrentUser = createAsyncThunk(
       const response = await getUser()
       return response as UserT
     } catch (err) {
-      rejectWithValue({ isAuth: false })
+      return rejectWithValue({ isAuth: false })
     }
   }
 )

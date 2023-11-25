@@ -20,11 +20,51 @@ import { useAppDispatch } from '@store/store'
 import { selectUser } from '@store/user/selectors'
 import { logout } from '@store/user/slice'
 
+import { useIsAdmin } from '@hooks/useIsAdmin'
+
+const adminLinks = [
+  {
+    id: 0,
+    to: '/columns',
+    text: 'Columns'
+  },
+  {
+    id: 1,
+    to: '/cards',
+    text: 'Cards'
+  },
+  {
+    id: 2,
+    to: '/statistic',
+    text: 'Statistic'
+  }
+]
+
 const Header: React.FC = () => {
   const user = useSelector(selectUser)
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
+
+  const isAdmin = useIsAdmin()
+
+  const renderLinks = (): React.ReactNode => {
+    return isAdmin ? (
+      <Box sx={{ ml: 'auto' }}>
+        {adminLinks.map(({ to, id, text }) => (
+          <Link
+            style={{ color: 'white', margin: '0 20px', fontWeight: 600 }}
+            key={id}
+            to={to}
+          >
+            {text}
+          </Link>
+        ))}
+      </Box>
+    ) : (
+      <></>
+    )
+  }
 
   return (
     <Stack
@@ -39,6 +79,7 @@ const Header: React.FC = () => {
       <Link to="/">
         <Image width={100} height={50} src={logo} alt="" />
       </Link>
+      {renderLinks()}
       <Menu>
         <MenuButton as={Card} p="2">
           <Stack direction="row" align="center">
