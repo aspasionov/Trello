@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-
 import { StatusE } from '@store/desk/types'
 import type { UserStateT } from './types'
 import { fetchUsers } from './asyncActions'
@@ -14,9 +12,9 @@ export const slice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    removeColumn: (state, id: PayloadAction<string>) => {
-      // state.user = action.payload
-    }
+    // removeColumn: (state, id: PayloadAction<string>) => {
+    //    state.user = action.payload
+    // }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {

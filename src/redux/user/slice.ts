@@ -36,7 +36,7 @@ export const slice = createSlice({
         Object.assign(action.payload, { isAuth: true })
         state.user = action.payload as UserT
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
       })
@@ -44,7 +44,7 @@ export const slice = createSlice({
         state.status = StatusE.SUCCESS
         state.user = action.payload as UserT
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(register.rejected, (state) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
       })

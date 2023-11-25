@@ -70,6 +70,7 @@ const LoginScreen: React.FC = () => {
   }
 
   const handleClick = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { errors, ...restState } = state
     try {
       const user = await appDispatch(login(restState as UserT)).unwrap()

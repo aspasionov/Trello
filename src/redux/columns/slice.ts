@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
 import type { ColumnsStateT } from './types'
 import { StatusE } from '@store/desk/types'
 import { fetchColumns } from './asyncActions'
@@ -13,9 +12,9 @@ export const slice = createSlice({
   name: 'columns',
   initialState,
   reducers: {
-    removeColumn: (state, id: PayloadAction<string>) => {
-      // state.user = action.payload
-    }
+    // removeColumn: (state, id: PayloadAction<string>) => {
+    //    state.user = action.payload
+    // }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchColumns.fulfilled, (state, action) => {

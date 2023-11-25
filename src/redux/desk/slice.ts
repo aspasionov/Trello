@@ -42,16 +42,16 @@ export const deskSlice = createSlice({
         state.items.push(action.payload)
         state.status = StatusE.SUCCESS
       })
-      .addCase(updateColumn.fulfilled, (state, action) => {
+      .addCase(updateColumn.fulfilled, (state) => {
         state.status = StatusE.SUCCESS
       })
-      .addCase(addCard.fulfilled, (state, action) => {
+      .addCase(addCard.fulfilled, (state) => {
         state.status = StatusE.SUCCESS
       })
-      .addCase(deleteCard.fulfilled, (state, action) => {
+      .addCase(deleteCard.fulfilled, (state) => {
         state.status = StatusE.SUCCESS
       })
-      .addCase(updateCard.fulfilled, (state, action) => {
+      .addCase(updateCard.fulfilled, (state) => {
         state.status = StatusE.SUCCESS
       })
   }
