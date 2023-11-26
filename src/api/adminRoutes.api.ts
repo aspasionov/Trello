@@ -18,7 +18,7 @@ export const fetchAllColumns = async (params: {
 }): Promise<never> => {
   for (const key in params) {
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    if (params[key] === undefined) delete params[key]
+    if (params[key] === undefined || !params[key]) delete params[key]
   }
   const fields: string = qs.stringify(params)
   return await instance({

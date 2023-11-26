@@ -11,6 +11,7 @@ export interface CardT {
 
 export interface ColumnT {
   id: string
+  _id?: string
   label: string
   title: string
   dbId: string

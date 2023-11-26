@@ -26,7 +26,7 @@ const Columns: React.FC = () => {
 
   const pushToSearch = (obj: Partial<ParamsT>): void => {
     for (const key in obj) {
-      if (obj[key] !== undefined) {
+      if (obj[key] !== undefined && obj[key]) {
         searchParams.set(key, obj[key])
       } else {
         searchParams.delete(key)
@@ -57,10 +57,10 @@ const Columns: React.FC = () => {
       <Flex gap="4" flexWrap="wrap">
         {columns.length > 0
           ? columns.map((el) => (
-              <Box sx={{ w: '48%' }} key={el.id}>
-                <ColumnCard column={el} />
-              </Box>
-            ))
+            <Box sx={{ w: '48%' }} key={el._id}>
+              <ColumnCard column={el} />
+            </Box>
+          ))
           : 'Nothing to show!'}
       </Flex>
     </Container>

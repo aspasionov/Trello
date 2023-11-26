@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
+
 import App from './App'
 import { store } from '@store/store'
 import { ChakraProvider } from '@chakra-ui/react'

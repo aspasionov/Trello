@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { fetchColumns, updateColumn } from '@store/desk/asyncActions'
 import type { ColumnT } from '@store/desk/types'
 import { useAppDispatch } from '@store/store'
@@ -22,6 +21,7 @@ import {
   Input
 } from '@chakra-ui/react'
 import ModalWindow from '@components/ModalWindow'
+import Controls from '@components/Controls'
 
 interface Props {
   title: string
@@ -78,22 +78,11 @@ const LaneHeader: React.FC<Props> = ({ title, label, onDelete, id }) => {
           </Heading>
           <Text fontSize="xs">{label}</Text>
         </Box>
-        <Button
-          sx={{ ml: 'auto' }}
-          onClick={handleEdit}
-          colorScheme="blue"
-          size="xs"
-        >
-          <EditIcon />
-        </Button>
-        <Button
-          sx={{ ml: 1 }}
-          onClick={handleOpenModal}
-          colorScheme="red"
-          size="xs"
-        >
-          <DeleteIcon />
-        </Button>
+
+        <Controls
+          onEdit={handleEdit}
+          onDelete={handleOpenModal}
+        />
       </Flex>
 
       <Modal isCentered isOpen={open} size="xs" onClose={handleCloseModal}>

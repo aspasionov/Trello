@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { ColumnT, ColumnI } from './types'
 import { StatusE } from './types'
+import { errorsToString } from '@utils/errorsToString'
 import {
   deleteColumn,
   addColumn,
@@ -11,6 +12,10 @@ import {
   deleteCard,
   updateCard
 } from './asyncActions'
+import { createStandaloneToast } from '@chakra-ui/react'
+
+const { toast } = createStandaloneToast()
+
 
 const initialState: ColumnI = {
   items: [],
@@ -47,6 +52,17 @@ export const deskSlice = createSlice({
       })
       .addCase(addCard.fulfilled, (state) => {
         state.status = StatusE.SUCCESS
+      })
+      .addCase(addCard.rejected, (state, action) => {
+        state.status = StatusE.SUCCESS
+        toast({
+          title: 'An error occurred.',
+          description: errorsToString(action.payload.errors),
+          status: 'error',
+          position: 'bottom-left',
+          duration: 6000,
+          isClosable: true,
+        })
       })
       .addCase(deleteCard.fulfilled, (state) => {
         state.status = StatusE.SUCCESS

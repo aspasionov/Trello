@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { addBackground } from '@api/cards.api'
 import { renderImgPath } from '@utils/imgPath'
 // import { useImageUploader } from '@hooks/useImageUploader'
@@ -13,11 +12,6 @@ import {
   Stack,
   FormControl,
   FormLabel,
-  MenuButton,
-  Button,
-  MenuList,
-  MenuItem,
-  Menu,
   Textarea
 } from '@chakra-ui/react'
 
@@ -26,6 +20,7 @@ import { useAppDispatch } from '@store/store'
 import type { CardProps } from 'react-trello-ts/dist/components/Card'
 import type { CardT } from '@store/desk/types'
 import ModalWindow from '@components/ModalWindow'
+import Controls from "@components/Controls";
 
 const Card: React.FC<CardProps & { columnId: string; background: string }> = (
   props
@@ -186,23 +181,13 @@ const Card: React.FC<CardProps & { columnId: string; background: string }> = (
           )}
         </Heading>
         <Box w="30%" sx={{ flex: '0 0 auto' }} flexGrow={0}>
-          <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <HamburgerIcon />
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={handleEdit}>Edit</MenuItem>
-              <MenuItem
-                onClick={() => {
-                  void (async () => {
-                    await handleDelete()
-                  })()
-                }}
-              >
-                Delete
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          <Controls
+            onEdit={handleEdit}
+            onDelete={() => {
+              void (async () => {
+                await handleDelete()
+              })()
+            }}/>
         </Box>
       </Flex>
 
