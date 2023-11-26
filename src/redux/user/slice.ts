@@ -3,6 +3,10 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { UserT, UserStateT } from './types'
 import { StatusE } from './types'
 import { getCurrentUser, login, register, update } from './asyncActions'
+import { createStandaloneToast } from '@chakra-ui/react'
+import {errorsToString} from "@utils/errorsToString";
+
+const { toast } = createStandaloneToast()
 
 const initialState: UserStateT = {
   user: null,
@@ -36,17 +40,33 @@ export const slice = createSlice({
         Object.assign(action.payload, { isAuth: true })
         state.user = action.payload as UserT
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
+        toast({
+          title: 'An error occurred.',
+          description: errorsToString(action.payload),
+          status: 'error',
+          position: 'bottom-left',
+          duration: 6000,
+          isClosable: true,
+        })
       })
       .addCase(register.fulfilled, (state, action) => {
         state.status = StatusE.SUCCESS
         state.user = action.payload as UserT
       })
-      .addCase(register.rejected, (state) => {
+      .addCase(register.rejected, (state,action) => {
         state.status = StatusE.ERROR
         state.user = { isAuth: false }
+        toast({
+          title: 'An error occurred.',
+          description: errorsToString(action.payload),
+          status: 'error',
+          position: 'bottom-left',
+          duration: 6000,
+          isClosable: true,
+        })
       })
       .addCase(update.fulfilled, (state, action) => {
         state.status = StatusE.SUCCESS

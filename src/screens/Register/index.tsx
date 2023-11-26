@@ -79,7 +79,6 @@ const RegisterScreen: React.FC = () => {
   }
 
   const handleClick = async (): Promise<void> => {
-    navigate('/')
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { errors, ...restState } = state
     try {

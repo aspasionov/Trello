@@ -12,7 +12,7 @@ const ProtectedRoute: React.FC<RouterProps> = ({ children }) => {
   const user = useSelector(selectUser)
 
   if (user.isAuth === false) {
-    return <Navigate to="login" replace />
+    return <Navigate to="/login" replace />
   }
 
   return (

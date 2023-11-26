@@ -24,17 +24,22 @@ import { useIsAdmin } from '@hooks/useIsAdmin'
 
 const adminLinks = [
   {
-    id: 0,
+    id: 3,
+    to: '/',
+    text: 'Home'
+  },
+  {
+    id: 1,
     to: '/columns',
     text: 'Columns'
   },
   {
-    id: 1,
+    id: 2,
     to: '/cards',
     text: 'Cards'
   },
   {
-    id: 2,
+    id: 3,
     to: '/statistic',
     text: 'Statistic'
   }
