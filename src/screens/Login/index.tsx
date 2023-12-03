@@ -10,12 +10,14 @@ import {
   FormLabel,
   FormErrorMessage,
   Button,
+  Box,
   Text
 } from '@chakra-ui/react'
 import instance from '@api/base.api'
 import { useAppDispatch } from '@store/store'
 import { login } from '@store/user/asyncActions'
 import type { UserT } from '@store/user/types'
+import logo from '@static/images/logo.svg'
 
 interface StateT {
   email: string
@@ -91,12 +93,15 @@ const LoginScreen: React.FC = () => {
   }
 
   return (
-    <Flex h="100vh">
-      <Center width="100%">
+    <Flex h="100vh" bg="#3179ba" color="white">
+      <Center width="100%" flexDirection="column">
+        <Box maxWidth='100px' mb={2}>
+          <img src={logo} alt="logo"/>
+        </Box>
         <Stack
           w="500px"
           spacing={3}
-          border="1px solid gray"
+          border="1px solid white"
           borderRadius="md"
           p={4}
         >
@@ -108,6 +113,7 @@ const LoginScreen: React.FC = () => {
             <Input
               placeholder="Email"
               type="email"
+              _placeholder={{ color: "white" }}
               value={state.email}
               onChange={(e) => {
                 onChange('set-email', e.target.value)
@@ -120,6 +126,7 @@ const LoginScreen: React.FC = () => {
             <Input
               placeholder="Password"
               type="password"
+              _placeholder={{ color: "white" }}
               value={state.password}
               onChange={(e) => {
                 onChange('set-password', e.target.value)

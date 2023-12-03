@@ -24,6 +24,6 @@ export const slice = createSlice({
   }
 })
 
-export const { removeColumn } = slice.actions
+// export const { removeColumn } = slice.actions
 
 export default slice.reducer

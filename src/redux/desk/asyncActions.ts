@@ -21,7 +21,7 @@ export const deleteColumn = createAsyncThunk(
   'desk/deleteColumn',
   async (id: string) => {
     const response = await deleteOne(id)
-    return response.data.id
+    return response.message
   }
 )
 
@@ -37,7 +37,7 @@ export const updateColumn = createAsyncThunk(
   'desk/updateColumn',
   async (column: ColumnT) => {
     const response = await updateOne(column.id, column)
-    return response.data
+    return response
   }
 )
 
@@ -54,7 +54,7 @@ export const deleteCard = createAsyncThunk(
   'desk/deleteCard',
   async (id: string) => {
     const response = await deleteOneCard(id)
-    return response.data.id
+    return response.message
   }
 )
 
@@ -62,6 +62,6 @@ export const updateCard = createAsyncThunk(
   'desk/updateCard',
   async (card: CardT) => {
     const response = await updateOneCard(card.id, card)
-    return response.data
+    return response
   }
 )
