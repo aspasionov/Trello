@@ -12,9 +12,8 @@ import {
   deleteCard,
   updateCard
 } from './asyncActions'
-import { createStandaloneToast } from '@chakra-ui/react'
+import {alert} from "@utils/toast";
 
-const { toast } = createStandaloneToast()
 
 
 const initialState: ColumnI = {
@@ -37,38 +36,36 @@ export const deskSlice = createSlice({
         state.status = StatusE.SUCCESS
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {
-        const prevColumns = state.items.filter(
-          (column) => column.id !== action.payload
-        )
-        state.items = prevColumns
+        alert(action.payload, 'success')
         state.status = StatusE.SUCCESS
       })
       .addCase(addColumn.fulfilled, (state, action) => {
-        state.items.push(action.payload)
+        alert(`Column "${action.payload.title}" successfully created` , 'success')
         state.status = StatusE.SUCCESS
       })
-      .addCase(updateColumn.fulfilled, (state) => {
+      .addCase(addColumn.rejected, (state) => {
+        alert(`Column creation was unsuccessful`)
+        state.status = StatusE.ERROR
+      })
+      .addCase(updateColumn.fulfilled, (state, action) => {
+        alert(`Column "${action.payload.title}" successfully updated` , 'success')
         state.status = StatusE.SUCCESS
       })
-      .addCase(addCard.fulfilled, (state) => {
+      .addCase(addCard.fulfilled, (state, action) => {
         state.status = StatusE.SUCCESS
+        alert(`Card "${action.payload.title}" successfully created` , 'success')
       })
       .addCase(addCard.rejected, (state, action) => {
-        state.status = StatusE.SUCCESS
-        toast({
-          title: 'An error occurred.',
-          description: errorsToString(action.payload.errors),
-          status: 'error',
-          position: 'bottom-left',
-          duration: 6000,
-          isClosable: true,
-        })
+        state.status = StatusE.ERROR
+        alert(errorsToString(action.payload.errors))
       })
-      .addCase(deleteCard.fulfilled, (state) => {
+      .addCase(deleteCard.fulfilled, (state, action) => {
         state.status = StatusE.SUCCESS
+        alert(action.payload, 'success')
       })
-      .addCase(updateCard.fulfilled, (state) => {
+      .addCase(updateCard.fulfilled, (state, action) => {
         state.status = StatusE.SUCCESS
+        alert(`Card "${action.payload.title}" successfully updated` , 'success')
       })
   }
 })

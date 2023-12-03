@@ -18,7 +18,6 @@ import Card from './Card'
 
 import Preloader from '@components/Preloader'
 import type { ColumnT, CardT } from '@store/desk/types'
-import type { Card as ICard } from 'react-trello-ts/dist/types/Board'
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -41,7 +40,7 @@ const Home: React.FC = () => {
     sourceLaneId: string,
     targetLaneId: string,
     position: number,
-    cardDetails: ICard
+    cardDetails: Partial<CardT>
   ): Promise<void> => {
     const newCard: Partial<CardT> = {
       ...cardDetails,
@@ -64,9 +63,10 @@ const Home: React.FC = () => {
     }
     await dispatch(addColumn(newColumn as ColumnT))
     await dispatch(fetchColumns())
+
   }
 
-  const handleCardAdd = async (card: ICard, laneId: string): Promise<void> => {
+  const handleCardAdd = async (card: CardT, laneId: string): Promise<void> => {
     const currentCol = columns.find((el) => el.id === laneId)
     const newCard: Partial<CardT & { draggable: boolean }> = {
       ...card,

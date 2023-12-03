@@ -7,9 +7,7 @@ import type {
   InternalAxiosRequestConfig
 } from 'axios'
 
-import { createStandaloneToast } from '@chakra-ui/react'
-
-const { toast } = createStandaloneToast()
+import { alert } from '@utils/toast'
 
 const initialConfig: AxiosRequestConfig = {
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -35,14 +33,7 @@ const onRequestError = (error: AxiosError): AxiosError => {
 
 const onResponseError = (error: AxiosError): AxiosError => {
   if(error.response?.status === 404) {
-    toast({
-      title: 'An error occurred.',
-      description: error.response.data?.message,
-      status: 'error',
-      position: 'bottom-left',
-      duration: 6000,
-      isClosable: true,
-    })
+    alert(error.response.data?.message || 'Something went wrong')
   }
   throw error
 }

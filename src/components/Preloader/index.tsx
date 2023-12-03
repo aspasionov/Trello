@@ -2,7 +2,7 @@ import React from 'react'
 import { Spinner, Box } from '@chakra-ui/react'
 
 const boxStyles = {
-  position: 'absolute',
+  position: 'fixed',
   top: 0,
   right: 0,
   bottom: 0,
