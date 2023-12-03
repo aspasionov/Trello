@@ -8,7 +8,7 @@ export const alert = (text: string, type?: 'success') => {
     description: text,
     status: type || 'error',
     position: 'bottom-left',
-    duration: 6000,
+    duration: 4000,
     isClosable: true,
   })
 }
