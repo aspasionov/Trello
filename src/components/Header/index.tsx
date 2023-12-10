@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { renderImgPath } from '@utils/imgPath'
 import logo from '@static/images/logo.svg'
+import { SearchIcon } from '@chakra-ui/icons'
 import {
   Menu,
   MenuButton,
@@ -13,12 +14,17 @@ import {
   Text,
   Box,
   Avatar,
+  InputGroup,
+  InputLeftElement,
+  Input,
   Card
 } from '@chakra-ui/react'
 
 import { useAppDispatch } from '@store/store'
 import { selectUser } from '@store/user/selectors'
 import { logout } from '@store/user/slice'
+import { setParams } from '@store/desk/slice'
+import { selectParams} from '@store/desk/selectors'
 
 import { useIsAdmin } from '@hooks/useIsAdmin'
 
@@ -47,8 +53,11 @@ const adminLinks = [
 
 const Header: React.FC = () => {
   const user = useSelector(selectUser)
+  const params = useSelector(selectParams)
   const navigate = useNavigate()
+  const location = useLocation()
 
+  const isHomePage = location.pathname === '/'
   const dispatch = useAppDispatch()
 
   const isAdmin = useIsAdmin()
@@ -71,6 +80,14 @@ const Header: React.FC = () => {
     )
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if(e.target.value) {
+      dispatch(setParams({ search: e.target.value }))
+    } else {
+      dispatch(setParams({}))
+    }
+  }
+
   return (
     <Stack
       direction="row"
@@ -85,6 +102,13 @@ const Header: React.FC = () => {
         <Image width={100} height={50} src={logo} alt="" />
       </Link>
       {renderLinks()}
+      {isHomePage && <InputGroup sx={{ maxWidth: 300, mr: 10 }}>
+        <InputLeftElement pointerEvents='none'>
+          <SearchIcon color='#3179ba' />
+        </InputLeftElement>
+        <Input type='text' placeholder='search' bg='white' borderColor='transparent' onChange={handleSearch} value={params.search || ''} />
+      </InputGroup>}
+
       <Menu>
         <MenuButton as={Card} p="2">
           <Stack direction="row" align="center">

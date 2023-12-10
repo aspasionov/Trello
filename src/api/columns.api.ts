@@ -1,9 +1,11 @@
 import instance from '@api/base.api'
 import type { ColumnT } from '@store/desk/types'
+import qs from 'qs'
 
-export const fetchAll = async (): Promise<never> => {
+export const fetchAll = async (params: { search: string }): Promise<never> => {
+  const fields: string = qs.stringify(params)
   return await instance({
-    url: '/api/column',
+    url: `/api/column?${fields}`,
     method: 'GET'
   })
 }

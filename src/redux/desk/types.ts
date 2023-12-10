@@ -27,5 +27,6 @@ export enum StatusE {
 
 export interface ColumnI {
   items: ColumnT[]
+  columnParams: Record<string, string>
   status: StatusE
 }
