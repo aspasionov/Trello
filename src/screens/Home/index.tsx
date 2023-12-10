@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import Board from 'react-trello'
 
@@ -11,29 +11,51 @@ import {
   addCard
 } from '@store/desk/asyncActions'
 import { useAppDispatch } from '@store/store'
-import { selectColumns, selectStatus } from '@store/desk/selectors'
+import {selectColumns, selectParams, selectStatus} from '@store/desk/selectors'
 import { StatusE } from '@store/desk/types'
+import { usePushToSearch } from '@hooks/usePushToSearch'
 import LaneHeader from './LaneHeader'
 import Card from './Card'
 
 import Preloader from '@components/Preloader'
 import type { ColumnT, CardT } from '@store/desk/types'
+import {useDebounce} from "@hooks/useDebounce";
+import { setParams } from '@store/desk/slice'
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
   const columns = useSelector(selectColumns)
-
+  const urlParams = useSelector(selectParams)
   const status = useSelector(selectStatus)
 
+  const initialized = useRef(false)
+
+  const { pushToSearch, searchParams } = usePushToSearch()
+
+  const search = useDebounce(urlParams.search, 500)
+
   useEffect(() => {
-    void (async () => {
-      try {
-        await dispatch(fetchColumns())
-      } catch (e) {
-        console.error(e)
-      }
-    })()
-  }, [])
+    const defaultSearchValue = searchParams.get('search')
+    if(defaultSearchValue) dispatch(
+      setParams({ search: defaultSearchValue })
+    )
+  }, [searchParams]);
+
+  useEffect(() => {
+    if(initialized.current) {
+      void (async () => {
+        try {
+          await dispatch(fetchColumns({ search }))
+          pushToSearch({ search })
+        } catch (e) {
+          console.error(e)
+        }
+      })()
+    } else {
+      initialized.current = true
+    }
+
+  }, [search])
 
   const handleDragEnd = async (
     cardId: string,

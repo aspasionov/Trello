@@ -8,7 +8,7 @@ import { Container, Flex, Box } from '@chakra-ui/react'
 import Filter from '@components/Filter'
 import ColumnCard from './Card'
 import { useDebounce } from '@hooks/useDebounce'
-import { useSearchParams } from 'react-router-dom'
+import { usePushToSearch } from '@hooks/usePushToSearch'
 
 interface ParamsT {
   search: string
@@ -18,22 +18,12 @@ interface ParamsT {
 const Columns: React.FC = () => {
   const dispatch = useAppDispatch()
   const columns = useSelector(selectColumns)
-  const [searchParams, setSearchParams] = useSearchParams()
   const [params, setParams] = useState<ParamsT>({
     search: '',
     userIds: ''
   })
 
-  const pushToSearch = (obj: Partial<ParamsT>): void => {
-    for (const key in obj) {
-      if (obj[key] !== undefined && obj[key]) {
-        searchParams.set(key, obj[key])
-      } else {
-        searchParams.delete(key)
-      }
-      setSearchParams(searchParams)
-    }
-  }
+  const { pushToSearch, searchParams } = usePushToSearch()
 
   const search = useDebounce(params.search, 500)
   const filterUserId = searchParams.get('userIds')

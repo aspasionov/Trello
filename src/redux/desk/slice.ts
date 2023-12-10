@@ -18,6 +18,7 @@ import {alert} from "@utils/toast";
 
 const initialState: ColumnI = {
   items: [],
+  columnParams: {},
   status: StatusE.LOADING
 }
 
@@ -27,7 +28,10 @@ export const deskSlice = createSlice({
   reducers: {
     setColumns: (state, action: PayloadAction<ColumnT[]>) => {
       state.items = action.payload.sort((a, b) => a.order - b.order)
-    }
+    },
+    setParams: (state, action: PayloadAction<Record<string, string>>) => {
+      state.columnParams = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -70,6 +74,6 @@ export const deskSlice = createSlice({
   }
 })
 
-export const { setColumns } = deskSlice.actions
+export const { setColumns, setParams } = deskSlice.actions
 
 export default deskSlice.reducer

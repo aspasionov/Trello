@@ -11,8 +11,8 @@ import type { ColumnT, CardT } from './types'
 
 export const fetchColumns = createAsyncThunk(
   'column/fetchColumns',
-  async () => {
-    const response = await fetchAll()
+  async (params) => {
+    const response = await fetchAll(params)
     return response.data
   }
 )
