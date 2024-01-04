@@ -14,6 +14,7 @@ export interface ColumnT {
   _id?: string
   label: string
   title: string
+  userId?: string
   dbId: string
   order: number
   cards: CardT[] | []
