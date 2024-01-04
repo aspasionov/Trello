@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelector } from "react-redux";
+import { selectUsers } from "@store/users/selectors";
 import {
   Card,
   Heading,
@@ -16,6 +18,8 @@ interface Props {
 }
 
 const ColumnCard: React.FC<Props> = ({ column }) => {
+  const users = useSelector(selectUsers)
+  const currentUserName = users.find(el => el._id === column.userId)
   return (
     <Card sx={{ mb: 4 }}>
       <CardHeader>
@@ -38,7 +42,7 @@ const ColumnCard: React.FC<Props> = ({ column }) => {
               User
             </Heading>
             <Text pt="2" fontSize="sm">
-              Check out the overview of your clients.
+              {currentUserName?.name || ''}
             </Text>
           </Box>
         </Stack>

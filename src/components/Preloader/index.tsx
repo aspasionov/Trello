@@ -14,8 +14,8 @@ const boxStyles = {
   justifyContent: 'center'
 }
 
-const Preloader: React.FC = () => (
-  <Box sx={boxStyles}>
+const Preloader: React.FC<{isInside?: boolean }> = ({ isInside }) => (
+  <Box sx={isInside ? {...boxStyles, position: 'absolute'}: boxStyles}>
     <Spinner />
   </Box>
 )
